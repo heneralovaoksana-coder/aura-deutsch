@@ -84,13 +84,6 @@ export default function ComingSoon() {
           transition={{ duration: 1, delay: 0.2 }}
           className="text-center w-full px-4"
         >
-          {/* Красивый жирный шрифт Открытие ЗБТ */}
-          <h2 className="text-white text-xl md:text-2xl font-outfit uppercase tracking-[0.25em] mb-5 font-black flex items-center justify-center gap-3" style={{ textShadow: "0 4px 10px rgba(0,0,0,0.5)" }}>
-            <span className="w-8 h-px bg-white/40 hidden sm:block" />
-            Открытие ЗБТ
-            <span className="w-8 h-px bg-white/40 hidden sm:block" />
-          </h2>
-          
           {/* Контейнер часов "всё в одном" (без подписей) */}
           <div className="flex justify-center">
             <div className="flex items-baseline bg-black/30 backdrop-blur-xl border border-white/10 rounded-3xl px-6 py-4 shadow-[0_10px_40px_rgba(0,0,0,0.6)]">
