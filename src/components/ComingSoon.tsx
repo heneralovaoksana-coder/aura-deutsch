@@ -61,16 +61,15 @@ export default function ComingSoon() {
         >
           {/* Белый с мягким свечением */}
           <span 
-            className="text-white"
-            style={{ textShadow: "0 0 15px rgba(255,255,255,0.4)" }}
+            className="text-white drop-shadow-lg"
           >
             Aura
           </span>
           {" "}
-          {/* Красный с красным неоном */}
+          {/* Золотой/Жёлтый под цвет клюва птицы */}
           <span 
-            className="text-[#FF003C]"
-            style={{ textShadow: "0 0 25px rgba(255,0,60,0.5)" }}
+            className="text-[#FFD700]"
+            style={{ textShadow: "0 0 20px rgba(255,215,0,0.4)" }}
           >
             Deutsch
           </span>
