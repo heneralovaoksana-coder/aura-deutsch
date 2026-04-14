@@ -59,10 +59,10 @@ export default function ComingSoon() {
           transition={{ duration: 1 }}
           className="text-5xl md:text-6xl font-outfit font-black tracking-tight"
         >
-          {/* Неоновый чёрный с тенью */}
+          {/* Белый с мягким свечением */}
           <span 
-            className="text-[#0B0E11]"
-            style={{ textShadow: "0 0 20px rgba(0,0,0,0.6)" }}
+            className="text-white"
+            style={{ textShadow: "0 0 15px rgba(255,255,255,0.4)" }}
           >
             Aura
           </span>
@@ -77,8 +77,8 @@ export default function ComingSoon() {
         </motion.h1>
       </div>
 
-      {/* 3. Отсчет поднят к клюву (bottom-1/3) */}
-      <div className="absolute bottom-[30%] left-0 right-0 z-10 flex flex-col items-center">
+      {/* 3. Отсчет опущен ниже (bottom-[20%]) */}
+      <div className="absolute bottom-[20%] left-0 right-0 z-10 flex flex-col items-center">
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
