@@ -1,9 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
-const TARGET_DATE = new Date("2026-04-19T00:00:00T").getTime();
+// Целевая дата: 19 Апреля 2026 года, 19:00 по Немецкому летнему времени (CEST = UTC+2)
+// 19:00 CEST — это 17:00 UTC
+const TARGET_DATE = new Date("2026-04-19T17:00:00Z").getTime();
 
 export default function ComingSoon() {
   const [timeLeft, setTimeLeft] = useState({
@@ -17,7 +19,7 @@ export default function ComingSoon() {
 
   useEffect(() => {
     setMounted(true);
-    
+
     const interval = setInterval(() => {
       const now = new Date().getTime();
       const distance = TARGET_DATE - now;
@@ -42,99 +44,100 @@ export default function ComingSoon() {
 
   return (
     <div className="fixed inset-0 z-[9999] overflow-hidden bg-[#CA00DF]">
-      {/* 1. Изображение птицы (фон) */}
+      {/* 1. Изображение */}
       <img
         src="/bird.png"
         alt="Aura Deutsch Mascot"
         className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none"
       />
 
-      {/* Затемняющий градиент сверху и снизу для читаемости текста */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#CA00DF]/60 via-transparent to-[#CA00DF]/90 pointer-events-none" />
-
-      {/* 2. Текст сверху (Aura Deutsch) */}
-      <div className="absolute top-0 left-0 right-0 pt-16 z-10 flex justify-center">
+      {/* 2. Aura Deutsch Сверху */}
+      <div className="absolute top-0 left-0 right-0 pt-20 z-10 flex justify-center">
         <motion.h1
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
-          className="text-5xl font-outfit font-black text-white tracking-tight drop-shadow-xl"
-          style={{ textShadow: "0px 4px 20px rgba(0,0,0,0.5)" }}
+          className="text-5xl md:text-6xl font-outfit font-black tracking-tight"
         >
-          Aura Deutsch
+          {/* Неоновый чёрный с тенью */}
+          <span 
+            className="text-[#0B0E11]"
+            style={{ textShadow: "0 0 20px rgba(0,0,0,0.6)" }}
+          >
+            Aura
+          </span>
+          {" "}
+          {/* Красный с красным неоном */}
+          <span 
+            className="text-[#FF003C]"
+            style={{ textShadow: "0 0 25px rgba(255,0,60,0.5)" }}
+          >
+            Deutsch
+          </span>
         </motion.h1>
       </div>
 
-      {/* 3. Отсчёт времени снизу */}
-      <div className="absolute bottom-0 left-0 right-0 pb-16 z-10 flex flex-col items-center">
+      {/* 3. Отсчет поднят к клюву (bottom-1/3) */}
+      <div className="absolute bottom-[30%] left-0 right-0 z-10 flex flex-col items-center">
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1, delay: 0.2 }}
-          className="text-center"
+          className="text-center w-full px-4"
         >
-          <p className="text-white/90 text-sm font-outfit uppercase tracking-[0.3em] mb-4 font-bold drop-shadow-md">
+          {/* Красивый жирный шрифт Открытие ЗБТ */}
+          <h2 className="text-white text-xl md:text-2xl font-outfit uppercase tracking-[0.25em] mb-5 font-black flex items-center justify-center gap-3" style={{ textShadow: "0 4px 10px rgba(0,0,0,0.5)" }}>
+            <span className="w-8 h-px bg-white/40 hidden sm:block" />
             Открытие ЗБТ
-          </p>
+            <span className="w-8 h-px bg-white/40 hidden sm:block" />
+          </h2>
           
-          <div className="flex items-center gap-3 md:gap-4 justify-center">
-            {/* Days */}
-            <div className="flex flex-col items-center">
-              <div className="w-16 h-16 md:w-20 md:h-20 bg-black/30 backdrop-blur-md border border-white/20 rounded-2xl flex items-center justify-center shadow-2xl">
-                <span className="text-3xl md:text-4xl font-outfit font-bold text-white">
+          {/* Контейнер часов "всё в одном" (без подписей) */}
+          <div className="flex justify-center">
+            <div className="flex items-baseline bg-black/30 backdrop-blur-xl border border-white/10 rounded-3xl px-6 py-4 shadow-[0_10px_40px_rgba(0,0,0,0.6)]">
+              {/* Дни */}
+              <div className="min-w-[60px] text-center">
+                <span className="text-4xl md:text-5xl font-outfit font-black text-white drop-shadow-md">
                   {timeLeft.days.toString().padStart(2, "0")}
                 </span>
               </div>
-              <span className="text-white/80 text-[10px] md:text-xs uppercase tracking-widest mt-2 font-inter font-semibold drop-shadow-sm">
-                Дней
-              </span>
-            </div>
-
-            <span className="text-2xl text-white/50 -mt-6 font-bold">:</span>
-
-            {/* Hours */}
-            <div className="flex flex-col items-center">
-              <div className="w-16 h-16 md:w-20 md:h-20 bg-black/30 backdrop-blur-md border border-white/20 rounded-2xl flex items-center justify-center shadow-2xl">
-                <span className="text-3xl md:text-4xl font-outfit font-bold text-white">
+              
+              <span className="text-2xl md:text-3xl text-white/40 font-bold mx-1 md:mx-2 relative -top-1">:</span>
+              
+              {/* Часы */}
+              <div className="min-w-[60px] text-center">
+                <span className="text-4xl md:text-5xl font-outfit font-black text-white drop-shadow-md">
                   {timeLeft.hours.toString().padStart(2, "0")}
                 </span>
               </div>
-              <span className="text-white/80 text-[10px] md:text-xs uppercase tracking-widest mt-2 font-inter font-semibold drop-shadow-sm">
-                Часов
-              </span>
-            </div>
 
-            <span className="text-2xl text-white/50 -mt-6 font-bold">:</span>
-
-            {/* Minutes */}
-            <div className="flex flex-col items-center">
-              <div className="w-16 h-16 md:w-20 md:h-20 bg-black/30 backdrop-blur-md border border-white/20 rounded-2xl flex items-center justify-center shadow-2xl">
-                <span className="text-3xl md:text-4xl font-outfit font-bold text-white">
+              <span className="text-2xl md:text-3xl text-white/40 font-bold mx-1 md:mx-2 relative -top-1">:</span>
+              
+              {/* Минуты */}
+              <div className="min-w-[60px] text-center">
+                <span className="text-4xl md:text-5xl font-outfit font-black text-white drop-shadow-md">
                   {timeLeft.minutes.toString().padStart(2, "0")}
-                </span>
+             </span>
               </div>
-              <span className="text-white/80 text-[10px] md:text-xs uppercase tracking-widest mt-2 font-inter font-semibold drop-shadow-sm">
-                Минут
-              </span>
-            </div>
 
-            <span className="text-2xl text-white/50 -mt-6 font-bold">:</span>
-
-            {/* Seconds */}
-            <div className="flex flex-col items-center">
-              <div className="w-16 h-16 md:w-20 md:h-20 bg-black/30 backdrop-blur-md border border-white/20 rounded-2xl flex items-center justify-center shadow-2xl">
-                <motion.span
-                  key={timeLeft.seconds}
-                  initial={{ opacity: 0.5, y: -5 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="text-3xl md:text-4xl font-outfit font-bold text-pink-300"
-                >
-                  {timeLeft.seconds.toString().padStart(2, "0")}
-                </motion.span>
+              <span className="text-2xl md:text-3xl text-white/40 font-bold mx-1 md:mx-2 relative -top-1">:</span>
+              
+              {/* Секунды с красивой плавной анимацией замены цифр */}
+              <div className="min-w-[60px] text-center overflow-hidden">
+                <AnimatePresence mode="popLayout">
+                  <motion.span
+                    key={timeLeft.seconds}
+                    initial={{ y: 20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    exit={{ y: -20, opacity: 0 }}
+                    transition={{ duration: 0.3, ease: "easeOut" }}
+                    className="inline-block text-4xl md:text-5xl font-outfit font-black text-[#FF003C]"
+                    style={{ textShadow: "0 0 15px rgba(255,0,60,0.5)" }}
+                  >
+                    {timeLeft.seconds.toString().padStart(2, "0")}
+                  </motion.span>
+                </AnimatePresence>
               </div>
-               <span className="text-pink-300/80 text-[10px] md:text-xs uppercase tracking-widest mt-2 font-inter font-semibold drop-shadow-sm">
-                Секунд
-              </span>
             </div>
           </div>
         </motion.div>
