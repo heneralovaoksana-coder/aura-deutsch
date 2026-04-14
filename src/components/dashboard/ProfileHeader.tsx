@@ -51,23 +51,23 @@ export default function ProfileHeader({ user, points }: ProfileHeaderProps) {
 
         {/* Right: Beta badge */}
         <motion.div
-          className="flex items-center gap-2"
+          className="flex flex-col items-end gap-1.5"
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.2, type: "spring", stiffness: 300 }}
         >
           {/* Status chip */}
-          <div className="glass-pink px-3 py-1.5 rounded-full flex items-center gap-1.5">
-            <Zap size={12} className="text-pink-neon" />
-            <span className="text-xs font-outfit font-semibold text-pink-neon">
-              ЗБТ · Бета-тест
+          <div className="glass-pink px-2 py-1 rounded-full flex items-center gap-1 whitespace-nowrap">
+            <Zap size={10} className="text-pink-neon" />
+            <span className="text-[10px] font-outfit font-semibold text-pink-neon">
+              ЗБТ Тест
             </span>
           </div>
 
           {/* Active status */}
-          <div className="glass px-3 py-1.5 rounded-full flex items-center gap-1.5 border border-green-money/30">
-            <div className="w-2 h-2 rounded-full bg-green-money animate-pulse" />
-            <span className="text-xs font-outfit font-semibold text-green-money">
+          <div className="glass px-2 py-1 rounded-full flex items-center gap-1 border border-green-money/30 whitespace-nowrap">
+            <div className="w-1.5 h-1.5 rounded-full bg-green-money animate-pulse" />
+            <span className="text-[10px] font-outfit font-semibold text-green-money">
               Активный
             </span>
           </div>

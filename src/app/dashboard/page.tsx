@@ -3,131 +3,220 @@
 export const dynamic = "force-dynamic";
 
 import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { useAppStore } from "@/lib/store";
 import { initTWA, haptic } from "@/lib/telegram";
-import ProfileHeader from "@/components/dashboard/ProfileHeader";
-import StatsGrid from "@/components/dashboard/StatsGrid";
+import { useRouter } from "next/navigation";
+import { Play, Flame, Target, BookOpen, ChevronRight } from "lucide-react";
 
 export default function DashboardPage() {
-  const { user, points, balance } = useAppStore();
-  const [showWithdrawModal, setShowWithdrawModal] = useState(false);
+  const { user, points, streak } = useAppStore();
   const checkAndUpdateStreak = useAppStore((s) => s.checkAndUpdateStreak);
+  const router = useRouter();
 
   useEffect(() => {
     initTWA();
     checkAndUpdateStreak();
   }, [checkAndUpdateStreak]);
 
-  const handleWithdraw = () => {
-    haptic.success();
-    setShowWithdrawModal(true);
-  };
+  // Calculate daily goal progress (e.g., 30 points per day goal)
+  const dailyGoal = 30;
+  const dailyProgress = Math.min(100, Math.round((points.todayGain / dailyGoal) * 100));
 
   return (
-    <main className="min-h-screen bg-bg-deep pb-8">
+    <main className="min-h-screen bg-bg-deep pb-32">
       {/* Ambient background glow */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
         <div
-          className="absolute -top-32 -right-32 w-96 h-96 rounded-full opacity-20"
+          className="absolute -top-32 -right-32 w-96 h-96 rounded-full opacity-15"
           style={{
             background: "radial-gradient(circle, #FF007A 0%, transparent 70%)",
             filter: "blur(60px)",
           }}
         />
         <div
-          className="absolute top-1/2 -left-32 w-80 h-80 rounded-full opacity-10"
+          className="absolute top-40 -left-32 w-80 h-80 rounded-full opacity-10"
           style={{
             background: "radial-gradient(circle, #8B5CF6 0%, transparent 70%)",
             filter: "blur(80px)",
           }}
         />
-        <div
-          className="absolute bottom-0 right-0 w-64 h-64 rounded-full opacity-10"
-          style={{
-            background: "radial-gradient(circle, #00FF94 0%, transparent 70%)",
-            filter: "blur(60px)",
-          }}
-        />
       </div>
 
-      {/* Content */}
-      <div className="relative z-10 max-w-lg mx-auto">
-        <ProfileHeader user={user} points={points} />
-        <StatsGrid
-          points={points}
-          balance={balance}
-          rank={user.rank}
-          onWithdraw={handleWithdraw}
-        />
-      </div>
+      <div className="relative z-10 max-w-lg mx-auto px-4 pt-6 space-y-6">
+        
+        {/* Header greeting */}
+        <motion.div
+          initial={{ opacity: 0, y: -16 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="flex items-center justify-between"
+        >
+          <div>
+            <p className="text-text-secondary text-xs uppercase tracking-widest font-inter mb-1">
+              С возвращением
+            </p>
+            <h1 className="text-2xl font-outfit font-bold text-white">
+              Привет, {user.name}! 👋
+            </h1>
+          </div>
+          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-neon to-purple-soft flex items-center justify-center text-lg font-outfit font-bold text-white shadow-neon-purple shadow-sm">
+            {user.avatar}
+          </div>
+        </motion.div>
 
-      {/* Withdraw Modal */}
-      <AnimatePresence>
-        {showWithdrawModal && (
-          <>
-            {/* Backdrop */}
-            <motion.div
-              className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setShowWithdrawModal(false)}
-            />
-
-            {/* Sheet */}
-            <motion.div
-              className="fixed bottom-0 left-0 right-0 z-50 max-w-lg mx-auto"
-              initial={{ y: "100%" }}
-              animate={{ y: 0 }}
-              exit={{ y: "100%" }}
-              transition={{ type: "spring", damping: 30, stiffness: 300 }}
-            >
-              <div className="glass rounded-t-3xl border-t border-x border-bg-border p-6">
-                {/* Handle */}
-                <div className="w-12 h-1 bg-white/20 rounded-full mx-auto mb-6" />
-
-                <h2 className="text-2xl font-outfit font-bold text-white mb-2">
-                  Вывести средства
-                </h2>
-                <p className="text-text-secondary text-sm mb-6">
-                  Доступно к выводу:{" "}
-                  <span className="text-green-money font-semibold">
-                    ${balance.available.toFixed(2)}
-                  </span>
-                </p>
-
-                {/* Info box */}
-                <div className="bg-bg-deep rounded-2xl p-4 mb-6 border border-bg-border">
-                  <p className="text-text-secondary text-xs leading-relaxed">
-                    🕐 Выплаты производятся в конце ЗБТ-периода. Средства зачислятся
-                    на ваш криптокошелёк после верификации активности.
-                  </p>
-                </div>
-
-                {/* Buttons */}
-                <div className="flex gap-3">
-                  <button
-                    className="flex-1 glass border border-bg-border text-text-secondary py-4 rounded-2xl font-outfit font-semibold"
-                    onClick={() => setShowWithdrawModal(false)}
-                  >
-                    Отмена
-                  </button>
-                  <button
-                    className="flex-1 btn-neon-green py-4 rounded-2xl font-outfit font-bold text-bg-deep"
-                    onClick={() => {
-                      haptic.success();
-                      setShowWithdrawModal(false);
-                    }}
-                  >
-                    Подтвердить
-                  </button>
-                </div>
+        {/* Big Continue Learning Card */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="glass rounded-3xl border border-bg-border overflow-hidden relative"
+        >
+          {/* Card Bg FX */}
+          <div className="absolute inset-0 bg-gradient-to-br from-pink-neon/10 to-purple-neon/5" />
+          
+          <div className="relative p-5">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="glass-pink px-2.5 py-1 rounded-md flex items-center gap-1">
+                <BookOpen size={12} className="text-pink-neon" />
+                <span className="text-[10px] font-outfit font-semibold text-pink-neon uppercase tracking-wider">
+                  Текущий урок
+                </span>
               </div>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
+            </div>
+
+            <h2 className="text-xl font-outfit font-bold text-white mb-1">
+              Урок 1: Твои первые слова
+            </h2>
+            <p className="text-sm text-text-secondary mb-6">
+              Изучаем базовые приветствия и простые фразы.
+            </p>
+
+            <button
+              onClick={() => {
+                haptic.select();
+                router.push("/lesson");
+              }}
+              className="w-full btn-neon-pink bg-pink-neon text-white py-3.5 rounded-2xl font-outfit font-bold text-base flex items-center justify-center gap-2 hover:scale-[0.98] transition-transform"
+            >
+              <Play size={18} fill="currentColor" />
+              Продолжить обучение
+            </button>
+          </div>
+        </motion.div>
+
+        {/* Stats Row: Streak & Daily Goal */}
+        <div className="grid grid-cols-2 gap-3">
+          {/* Streak Card */}
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.2 }}
+            className="glass rounded-3xl border border-bg-border p-4 relative overflow-hidden"
+          >
+            <div className="absolute -right-4 -bottom-4 opacity-10">
+              <Flame size={80} className="text-orange-500" />
+            </div>
+            <div className="relative">
+              <div className="flex items-center gap-2 mb-2">
+                <Flame size={16} className="text-orange-500" fill="currentColor" />
+                <p className="text-xs text-text-muted uppercase tracking-wider">Серия</p>
+              </div>
+              <p className="text-3xl font-outfit font-black text-white mb-1">
+                {streak.days} 
+                <span className="text-base text-text-secondary font-medium ml-1">дней</span>
+              </p>
+              <p className="text-[10px] text-text-secondary leading-tight">
+                Зайди завтра, чтобы не потерять множитель!
+              </p>
+            </div>
+          </motion.div>
+
+          {/* Daily Goal Card */}
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.3 }}
+            className="glass rounded-3xl border border-bg-border p-4 relative overflow-hidden"
+          >
+            <div className="absolute -right-4 -bottom-4 opacity-10">
+              <Target size={80} className="text-green-money" />
+            </div>
+            <div className="relative">
+              <div className="flex items-center gap-2 mb-2">
+                <Target size={16} className="text-green-money" />
+                <p className="text-xs text-text-muted uppercase tracking-wider">Цель</p>
+              </div>
+              <p className="text-3xl font-outfit font-black text-white mb-2">
+                {points.todayGain}
+                <span className="text-base text-text-secondary font-medium ml-1">/ {dailyGoal}</span>
+              </p>
+              
+              {/* Mini progress bar */}
+              <div className="h-1.5 w-full bg-bg-deep rounded-full overflow-hidden">
+                <motion.div 
+                  className="h-full bg-green-money rounded-full"
+                  initial={{ width: 0 }}
+                  animate={{ width: `${dailyProgress}%` }}
+                  transition={{ delay: 0.8, duration: 1 }}
+                />
+              </div>
+              <p className="text-[10px] text-text-secondary mt-1.5">
+                {dailyProgress >= 100 ? "Цель выполнена! 🎉" : "Очки за сегодня"}
+              </p>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Word of the Day */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+          className="glass rounded-3xl border border-dashed border-bg-border p-5"
+        >
+          <div className="flex items-center justify-between mb-4">
+            <p className="text-xs text-text-muted uppercase tracking-widest">Слово дня</p>
+            <div className="px-2 py-0.5 rounded text-[10px] uppercase font-bold bg-white/5 text-text-secondary">
+              A1
+            </div>
+          </div>
+          <div className="text-center pb-2">
+            <h3 className="text-3xl font-outfit font-black text-white mb-1">
+              wunderschön
+            </h3>
+            <p className="text-pink-neon font-outfit font-semibold mb-3">
+              (прекрасный, чудесный)
+            </p>
+            <p className="text-sm text-text-secondary italic">
+              «Das Wetter heute ist wunderschön!»
+            </p>
+          </div>
+        </motion.div>
+
+        {/* Navigate to profile hint */}
+        <motion.div
+           initial={{ opacity: 0 }}
+           animate={{ opacity: 1 }}
+           transition={{ delay: 0.6 }}
+           onClick={() => {
+             haptic.tap();
+             router.push("/profile");
+           }}
+           className="glass border border-bg-border rounded-2xl p-4 flex items-center justify-between active:scale-95 transition-transform"
+        >
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-full bg-pink-neon/20 flex items-center justify-center">
+              <span className="text-pink-neon">💸</span>
+            </div>
+            <div>
+              <p className="text-sm font-outfit font-bold text-white">Статистика и баланс</p>
+              <p className="text-xs text-text-secondary">Проверяй свои накопления ЗБТ</p>
+            </div>
+          </div>
+          <ChevronRight size={16} className="text-text-muted" />
+        </motion.div>
+
+      </div>
     </main>
   );
 }
