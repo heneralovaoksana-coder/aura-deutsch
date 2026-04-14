@@ -102,7 +102,12 @@ export default function ProfilePage() {
             {/* КАБИНЕТ */}
             {activeTab === "cabinet" && (
               <div className="px-4 space-y-4">
-                <StatsGrid />
+                <StatsGrid 
+                  points={points} 
+                  balance={balance} 
+                  rank={user.rank} 
+                  onWithdraw={() => alert("Вывод средств скоро будет доступен в профиле!")} 
+                />
               </div>
             )}
 
