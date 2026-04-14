@@ -206,11 +206,11 @@ export default function ProfilePage() {
                   </div>
                   <div className="flex-1">
                     <p className="text-pink-neon font-outfit font-semibold text-sm">Ты</p>
-                    <p className="text-text-muted text-xs">{points} баллов</p>
+                    <p className="text-text-muted text-xs">{points.total} баллов</p>
                   </div>
                   <div className="text-right">
                     <p className="text-green-money font-outfit font-bold text-sm">
-                      ${(points * 0.08).toFixed(2)}
+                      ${(points.total * 0.08).toFixed(2)}
                     </p>
                     <p className="text-text-muted text-xs">возн.</p>
                   </div>
