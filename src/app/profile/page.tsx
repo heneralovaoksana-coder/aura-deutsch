@@ -1,5 +1,8 @@
 "use client";
 
+// Prevent static prerendering — Zustand reads localStorage (client-only)
+export const dynamic = "force-dynamic";
+
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { BookOpen, Trophy, LayoutDashboard, Settings, Zap } from "lucide-react";
@@ -29,7 +32,7 @@ const TABS = [
 
 export default function ProfilePage() {
   const [activeTab, setActiveTab] = useState("cabinet");
-  const { points } = useAppStore();
+  const { points, user, balance } = useAppStore();
   const router = useRouter();
 
   return (
@@ -46,7 +49,7 @@ export default function ProfilePage() {
 
         {/* ── Profile header ──────────────────────────────── */}
         <div className="px-4 pt-6 pb-2">
-          <ProfileHeader />
+          <ProfileHeader user={user} points={points} />
         </div>
 
         {/* ── Tabs ────────────────────────────────────────── */}
