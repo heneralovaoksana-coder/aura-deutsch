@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Outfit, Inter } from "next/font/google";
 import "./globals.css";
 import BottomNav from "@/components/ui/BottomNav";
+import ComingSoon from "@/components/ComingSoon";
 
 const outfit = Outfit({
   subsets: ["latin"],
@@ -39,10 +40,13 @@ export default function RootLayout({
         <script src="https://telegram.org/js/telegram-web-app.js" async />
       </head>
       <body className="font-inter antialiased bg-bg-deep text-text-primary min-h-screen">
+        <ComingSoon />
+        {/*
         <div id="root" className="relative">
           {children}
           <BottomNav />
         </div>
+        */}
       </body>
     </html>
   );
