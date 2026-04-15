@@ -36,8 +36,9 @@ export default function OnboardingPage() {
           transition={{ type: "spring", stiffness: 200, damping: 20 }}
           className="flex flex-col items-center gap-4"
         >
-          <div className="w-24 h-24 rounded-3xl bg-gradient-to-br from-pink-neon to-purple-neon flex items-center justify-center shadow-neon-pink text-5xl">
-            🇩🇪
+          <div className="w-24 h-24 rounded-3xl bg-gradient-to-br from-pink-neon to-purple-neon flex items-center justify-center shadow-neon-pink overflow-hidden p-2">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/bird.png" alt="Aura Deutsch Bird" className="w-full h-full object-contain drop-shadow-md" />
           </div>
           <div>
             <h1 className="text-4xl font-outfit font-black text-white">
@@ -83,7 +84,7 @@ export default function OnboardingPage() {
               icon={<BookOpen size={18} />}
               onClick={() => {
                 haptic.select();
-                router.push("/lesson");
+                router.push("/dashboard");
               }}
             >
               Да, я новичок

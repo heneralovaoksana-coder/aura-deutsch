@@ -74,7 +74,7 @@ export default function LessonPage() {
                 key={lesson.id}
                 initial={{ opacity: 0, y: 24 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.05, Math: Math.min(i*0.05, 0.5), ease: [0.22, 1, 0.36, 1] }}
+                transition={{ delay: Math.min(i * 0.05, 0.5), ease: "easeOut" }}
               >
                 <motion.button
                   whileHover={!isLocked ? { scale: 1.02 } : {}}

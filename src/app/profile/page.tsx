@@ -7,7 +7,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { BookOpen, Trophy, LayoutDashboard, Settings, Zap } from "lucide-react";
 import { useAppStore } from "@/lib/store";
-import { LESSONS } from "@/data/lessons";
+import { CURRICULUM } from "@/data/lessons";
 import { useRouter } from "next/navigation";
 import { haptic } from "@/lib/telegram";
 
@@ -122,7 +122,7 @@ export default function ProfilePage() {
                   </span>
                 </div>
 
-                {LESSONS.map((lesson, i) => (
+                {(CURRICULUM[user.level] || []).map((lesson: any, i: number) => (
                   <motion.button
                     key={lesson.id}
                     initial={{ opacity: 0, x: -16 }}

@@ -55,6 +55,7 @@ export interface AppStore {
   checkAndUpdateStreak: () => void;
   requestWithdraw: (amount: number) => void;
   setUserName: (name: string) => void;
+  setUserLevel: (level: UserLevel) => void;
   completeLesson: (level: UserLevel, scorePercentage: number) => void;
 }
 
@@ -193,6 +194,21 @@ export const useAppStore = create<AppStore>()(
             avatar: name.charAt(0).toUpperCase(),
           },
         }));
+      },
+
+      setUserLevel: (level: UserLevel) => {
+        set((state) => {
+          const newProgress = { ...state.progress };
+          // If level is placed higher, auto-complete previous levels
+          if (level === "A1" || level === "A2" || level === "B1") newProgress.A0 = 40;
+          if (level === "A2" || level === "B1") newProgress.A1 = 40;
+          if (level === "B1") newProgress.A2 = 40;
+
+          return {
+            user: { ...state.user, level },
+            progress: newProgress,
+          };
+        });
       },
 
       completeLesson: (level: UserLevel, scorePercentage: number) => {
