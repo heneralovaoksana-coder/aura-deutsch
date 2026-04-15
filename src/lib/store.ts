@@ -16,6 +16,13 @@ export interface UserState {
   rankTarget: number; // e.g. 10 (ТОП-10)
 }
 
+export interface ProgressState {
+  A0: number; // max unlocked lesson (0 to 39)
+  A1: number;
+  A2: number;
+  B1: number;
+}
+
 export interface PointsState {
   total: number;
   todayGain: number;
@@ -38,6 +45,7 @@ export interface BalanceState {
 
 export interface AppStore {
   user: UserState;
+  progress: ProgressState;
   points: PointsState;
   streak: StreakState;
   balance: BalanceState;
@@ -47,6 +55,7 @@ export interface AppStore {
   checkAndUpdateStreak: () => void;
   requestWithdraw: (amount: number) => void;
   setUserName: (name: string) => void;
+  completeLesson: (level: UserLevel, scorePercentage: number) => void;
 }
 
 export type PointSource =
@@ -83,6 +92,12 @@ const INITIAL_STATE = {
     level: "A0" as UserLevel,
     rank: 13,
     rankTarget: 10,
+  },
+  progress: {
+    A0: 0,
+    A1: 0,
+    A2: 0,
+    B1: 0,
   },
   points: {
     total: 1000,
@@ -178,6 +193,44 @@ export const useAppStore = create<AppStore>()(
             avatar: name.charAt(0).toUpperCase(),
           },
         }));
+      },
+
+      completeLesson: (level: UserLevel, scorePercentage: number) => {
+        set((state) => {
+          const currentProgress = state.progress[level];
+          const isExam = currentProgress === 39; // 40th lesson is index 39
+          
+          if (isExam) {
+            if (scorePercentage >= 80) {
+              // Passed exam! Upgrade level if possible
+              let nextLevel: UserLevel = level;
+              if (level === "A0") nextLevel = "A1";
+              else if (level === "A1") nextLevel = "A2";
+              else if (level === "A2") nextLevel = "B1";
+              
+              return {
+                user: { ...state.user, level: nextLevel },
+                progress: { ...state.progress, [level]: 40 }, // maxed out this level
+              };
+            } else {
+              // Failed exam. Rollback 3 lessons
+              return {
+                progress: {
+                  ...state.progress,
+                  [level]: Math.max(0, currentProgress - 3),
+                },
+              };
+            }
+          } else {
+            // Normal lesson pass. Just increment progress.
+            return {
+              progress: {
+                ...state.progress,
+                [level]: Math.min(39, currentProgress + 1), // cap at 39 (exam)
+              },
+            };
+          }
+        });
       },
     }),
     {

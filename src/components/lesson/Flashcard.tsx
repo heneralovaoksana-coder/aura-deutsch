@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Play } from "lucide-react";
 import { FlashCard } from "@/data/lessons";
 import { haptic } from "@/lib/telegram";
 
@@ -13,6 +14,26 @@ interface FlashcardProps {
 export default function Flashcard({ card, onComplete }: FlashcardProps) {
   const [flipped, setFlipped] = useState(false);
   const [done, setDone] = useState(false);
+
+  const playWordAudio = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    haptic.tick();
+    if ("speechSynthesis" in window) {
+      const utterance = new SpeechSynthesisUtterance(card.german);
+      utterance.lang = "de-DE";
+      window.speechSynthesis.speak(utterance);
+    }
+  };
+
+  const playExampleAudio = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    haptic.tick();
+    if ("speechSynthesis" in window) {
+      const utterance = new SpeechSynthesisUtterance(card.example);
+      utterance.lang = "de-DE";
+      window.speechSynthesis.speak(utterance);
+    }
+  };
 
   const handleFlip = () => {
     if (done) return;
@@ -74,9 +95,17 @@ export default function Flashcard({ card, onComplete }: FlashcardProps) {
               </motion.div>
 
               {/* German word */}
-              <h2 className="text-5xl font-outfit font-black text-white mb-2">
-                {card.german}
-              </h2>
+              <div className="flex items-center justify-center gap-3 mb-2">
+                <h2 className="text-5xl font-outfit font-black text-white">
+                  {card.german}
+                </h2>
+                <button
+                  onClick={playWordAudio}
+                  className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-white hover:bg-white/20 transition-colors shrink-0"
+                >
+                  <Play size={20} fill="currentColor" />
+                </button>
+              </div>
 
               {/* Pronunciation */}
               <p className="text-text-muted text-sm font-inter mb-4">
@@ -133,9 +162,17 @@ export default function Flashcard({ card, onComplete }: FlashcardProps) {
 
               {/* Example */}
               <div className="bg-bg-deep rounded-2xl p-4 text-left mb-4">
-                <p className="text-pink-neon font-outfit font-semibold text-base mb-1">
-                  "{card.example}"
-                </p>
+                <div className="flex items-start justify-between gap-2 mb-1">
+                  <p className="text-pink-neon font-outfit font-semibold text-base">
+                    "{card.example}"
+                  </p>
+                  <button
+                    onClick={playExampleAudio}
+                    className="w-8 h-8 bg-pink-neon/10 rounded-full flex items-center justify-center text-pink-neon border border-pink-neon/20 hover:bg-pink-neon/20 shrink-0"
+                  >
+                    <Play size={14} fill="currentColor" />
+                  </button>
+                </div>
                 <p className="text-text-secondary text-sm italic">
                   {card.exampleRu}
                 </p>

@@ -7,8 +7,13 @@ import { Lesson, LessonStep } from "@/data/lessons";
 import LessonProgressBar from "./LessonProgressBar";
 import Flashcard from "./Flashcard";
 import WordJumble from "./WordJumble";
+import AlphabetCard from "./AlphabetCard";
+import GrammarCard from "./GrammarCard";
+import AudioStory from "./AudioStory";
+import ExamScreen from "./ExamScreen";
 import ExcellentScreen from "./ExcellentScreen";
 import { haptic } from "@/lib/telegram";
+import { useAppStore } from "@/lib/store";
 
 interface LessonContainerProps {
   lesson: Lesson;
@@ -44,14 +49,23 @@ export default function LessonContainer({ lesson }: LessonContainerProps) {
   const [stepIndex, setStepIndex] = useState(0);
   const [direction, setDirection] = useState(1);
   const [finished, setFinished] = useState(false);
+  const [examPercentage, setExamPercentage] = useState<number | null>(null);
+
+  const { completeLesson, user } = useAppStore();
 
   const totalSteps = lesson.steps.length;
   const currentStep = lesson.steps[stepIndex];
 
+  const handleLessonComplete = (score: number) => {
+    setExamPercentage(score);
+    completeLesson(user.level, score);
+    setFinished(true);
+  };
+
   const goNext = () => {
     haptic.tick();
     if (stepIndex >= totalSteps - 1) {
-      setFinished(true);
+      handleLessonComplete(100);
     } else {
       setDirection(1);
       setStepIndex((prev) => prev + 1);
@@ -59,6 +73,18 @@ export default function LessonContainer({ lesson }: LessonContainerProps) {
   };
 
   if (finished) {
+    if (examPercentage !== null && examPercentage < 80 && lesson.id.includes("exam")) {
+      return (
+        <div className="fixed inset-0 bg-bg-deep flex flex-col items-center justify-center p-6 text-center z-50">
+           <h1 className="text-5xl font-outfit font-black text-red-500 mb-4">Экзамен не сдан</h1>
+           <p className="text-white text-lg mb-8 max-w-sm">Вы набрали {Math.round(examPercentage)}%. Для перехода дальше нужно 80%. Ваш прогресс откатился на 3 урока назад для повторения.</p>
+           <button onClick={() => router.push("/dashboard")} className="w-full max-w-sm py-4 rounded-2xl font-bold bg-white/10 text-white border border-white/20 hover:bg-white/20">
+             Вернуться в меню
+           </button>
+        </div>
+      );
+    }
+
     return (
       <ExcellentScreen
         points={lesson.pointsReward}
@@ -112,11 +138,12 @@ export default function LessonContainer({ lesson }: LessonContainerProps) {
             transition={pageTransition}
             className="absolute inset-0 flex flex-col"
           >
-            {currentStep.type === "flashcard" ? (
-              <Flashcard card={currentStep.card} onComplete={goNext} />
-            ) : (
-              <WordJumble exercise={currentStep.exercise} onComplete={goNext} />
-            )}
+            {currentStep.type === "flashcard" && <Flashcard card={currentStep.card} onComplete={goNext} />}
+            {currentStep.type === "jumble" && <WordJumble exercise={currentStep.exercise} onComplete={goNext} />}
+            {currentStep.type === "alphabet" && <AlphabetCard card={currentStep.card} onComplete={goNext} />}
+            {currentStep.type === "grammar" && <GrammarCard card={currentStep.card} onComplete={goNext} />}
+            {currentStep.type === "audio_story" && <AudioStory story={currentStep.story} onComplete={goNext} />}
+            {currentStep.type === "exam" && <ExamScreen questions={currentStep.questions} onComplete={(score) => handleLessonComplete(score)} />}
           </motion.div>
         </AnimatePresence>
       </div>

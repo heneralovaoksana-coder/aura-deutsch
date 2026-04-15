@@ -8,11 +8,16 @@ import { useAppStore } from "@/lib/store";
 import { initTWA, haptic } from "@/lib/telegram";
 import { useRouter } from "next/navigation";
 import { Play, Flame, Target, BookOpen, ChevronRight } from "lucide-react";
+import { CURRICULUM } from "@/data/lessons";
 
 export default function DashboardPage() {
-  const { user, points, streak } = useAppStore();
+  const { user, points, streak, progress } = useAppStore();
   const checkAndUpdateStreak = useAppStore((s) => s.checkAndUpdateStreak);
   const router = useRouter();
+
+  const currentLevelProgress = progress[user.level] || 0;
+  const currentLesson = CURRICULUM[user.level]?.[currentLevelProgress];
+  const totalLessons = CURRICULUM[user.level]?.length || 40;
 
   useEffect(() => {
     initTWA();
@@ -75,31 +80,38 @@ export default function DashboardPage() {
           <div className="absolute inset-0 bg-gradient-to-br from-pink-neon/10 to-purple-neon/5" />
           
           <div className="relative p-5">
-            <div className="flex items-center gap-2 mb-3">
+            <div className="flex items-center justify-between mb-3">
               <div className="glass-pink px-2.5 py-1 rounded-md flex items-center gap-1">
                 <BookOpen size={12} className="text-pink-neon" />
                 <span className="text-[10px] font-outfit font-semibold text-pink-neon uppercase tracking-wider">
-                  Текущий урок
+                  Текущий уровень: {user.level}
                 </span>
+              </div>
+              <div className="text-xs font-bold text-text-muted">
+                {currentLevelProgress + 1} / {totalLessons}
               </div>
             </div>
 
             <h2 className="text-xl font-outfit font-bold text-white mb-1">
-              Урок 1: Твои первые слова
+              {currentLesson ? currentLesson.title : "Уровень пройден!"}
             </h2>
-            <p className="text-sm text-text-secondary mb-6">
-              Изучаем базовые приветствия и простые фразы.
+            <p className="text-sm text-text-secondary mb-6 truncate">
+              {currentLesson ? currentLesson.subtitle : "Ожидайте новых обновлений."}
             </p>
 
             <button
               onClick={() => {
+                if (!currentLesson) return;
                 haptic.select();
                 router.push("/lesson");
               }}
-              className="w-full btn-neon-pink bg-pink-neon text-white py-3.5 rounded-2xl font-outfit font-bold text-base flex items-center justify-center gap-2 hover:scale-[0.98] transition-transform"
+              disabled={!currentLesson}
+              className={`w-full py-3.5 rounded-2xl font-outfit font-bold text-base flex items-center justify-center gap-2 transition-transform ${
+                currentLesson ? "btn-neon-pink bg-pink-neon text-white hover:scale-[0.98]" : "bg-white/5 text-text-muted cursor-not-allowed"
+              }`}
             >
               <Play size={18} fill="currentColor" />
-              Продолжить обучение
+              {currentLesson ? "Продолжить обучение" : "Скоро"}
             </button>
           </div>
         </motion.div>

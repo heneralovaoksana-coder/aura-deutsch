@@ -2,12 +2,12 @@
 
 import { usePathname, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Home, Info, User, HeadphonesIcon } from "lucide-react";
+import { Home, User, HeadphonesIcon, BookOpen } from "lucide-react";
 import { haptic } from "@/lib/telegram";
 
 const NAV_ITEMS = [
   { icon: Home,            label: "Главная",   href: "/dashboard" },
-  { icon: Info,            label: "О нас",     href: "/about"     },
+  { icon: BookOpen,        label: "Словарь",   href: "/dictionary" },
   { icon: User,            label: "Профиль",   href: "/profile"   },
   { icon: HeadphonesIcon,  label: "Поддержка", href: "/support"   },
 ];

@@ -2,15 +2,19 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { BookOpen, Zap, Clock, ChevronRight, Star } from "lucide-react";
-import { LESSONS } from "@/data/lessons";
+import { BookOpen, Zap, Clock, ChevronRight, Star, Lock } from "lucide-react";
+import { CURRICULUM } from "@/data/lessons";
 import LessonContainer from "@/components/lesson/LessonContainer";
 import { haptic } from "@/lib/telegram";
+import { useAppStore } from "@/lib/store";
 
 export default function LessonPage() {
   const [activeLessonId, setActiveLessonId] = useState<string | null>(null);
+  const { user, progress } = useAppStore();
 
-  const activeLesson = LESSONS.find((l) => l.id === activeLessonId);
+  const levelLessons = CURRICULUM[user.level] || [];
+  const activeLesson = levelLessons.find((l) => l.id === activeLessonId);
+  const maxUnlocked = progress[user.level]; // from store
 
   // If a lesson is active, show the lesson container full-screen
   if (activeLesson) {
@@ -44,9 +48,9 @@ export default function LessonPage() {
             </div>
             <div>
               <h1 className="text-2xl font-outfit font-black text-white">
-                Уроки
+                Уроки {user.level}
               </h1>
-              <p className="text-text-muted text-xs">Немецкий · A0 → A1</p>
+              <p className="text-text-muted text-xs">Немецкий · Текущий уровень</p>
             </div>
           </div>
 
@@ -61,72 +65,74 @@ export default function LessonPage() {
 
         {/* Lesson cards */}
         <div className="space-y-3">
-          {LESSONS.map((lesson, i) => (
-            <motion.div
-              key={lesson.id}
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
-            >
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                onClick={() => {
-                  haptic.select();
-                  setActiveLessonId(lesson.id);
-                }}
-                className="w-full glass rounded-3xl border border-bg-border p-5 text-left flex items-center gap-4 hover:border-pink-neon/30 transition-all duration-300 hover:shadow-neon-pink-sm"
+          {levelLessons.map((lesson, i) => {
+            const isLocked = i > maxUnlocked;
+            const isExam = lesson.id.includes("exam");
+
+            return (
+              <motion.div
+                key={lesson.id}
+                initial={{ opacity: 0, y: 24 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.05, Math: Math.min(i*0.05, 0.5), ease: [0.22, 1, 0.36, 1] }}
               >
-                {/* Lesson number */}
-                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-pink-neon to-purple-neon flex items-center justify-center text-2xl font-outfit font-black text-white flex-shrink-0 shadow-neon-pink-sm">
-                  {i + 1}
-                </div>
-
-                {/* Info */}
-                <div className="flex-1 min-w-0">
-                  <p className="text-white font-outfit font-bold text-base mb-0.5">
-                    {lesson.title}
-                  </p>
-                  <p className="text-text-secondary text-sm mb-2">
-                    {lesson.subtitle}
-                  </p>
-                  <div className="flex items-center gap-3">
-                    <div className="flex items-center gap-1">
-                      <Clock size={11} className="text-text-muted" />
-                      <span className="text-text-muted text-xs">
-                        {lesson.steps.length} шагов
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <Star size={11} className="text-gold-bright" />
-                      <span className="text-gold-bright text-xs font-semibold">
-                        +{lesson.pointsReward} pts
-                      </span>
-                    </div>
+                <motion.button
+                  whileHover={!isLocked ? { scale: 1.02 } : {}}
+                  whileTap={!isLocked ? { scale: 0.98 } : {}}
+                  onClick={() => {
+                    if (isLocked) return;
+                    haptic.select();
+                    setActiveLessonId(lesson.id);
+                  }}
+                  className={`w-full rounded-3xl border p-5 text-left flex items-center gap-4 transition-all duration-300 ${
+                    isLocked 
+                      ? "bg-white/5 border-white/5 opacity-50 cursor-not-allowed" 
+                      : isExam
+                        ? "bg-gradient-to-r from-purple-neon/20 to-pink-neon/20 border-pink-neon/50 shadow-neon-pink-sm"
+                        : "glass border-bg-border hover:border-pink-neon/30 hover:shadow-neon-pink-sm"
+                  }`}
+                >
+                  {/* Lesson number or Icon */}
+                  <div className={`w-14 h-14 rounded-2xl flex items-center justify-center text-2xl font-outfit font-black text-white flex-shrink-0 ${
+                    isLocked ? "bg-white/10" : isExam ? "bg-gradient-to-br from-red-500 to-pink-neon shadow-lg" : "bg-gradient-to-br from-pink-neon to-purple-neon shadow-neon-pink-sm"
+                  }`}>
+                    {isLocked ? <Lock size={20} /> : isExam ? "!" : i + 1}
                   </div>
-                </div>
 
-                {/* Arrow */}
-                <ChevronRight size={20} className="text-text-muted flex-shrink-0" />
-              </motion.button>
-            </motion.div>
-          ))}
+                  {/* Info */}
+                  <div className="flex-1 min-w-0">
+                    <p className="text-white font-outfit font-bold text-base mb-0.5 truncate">
+                      {lesson.title}
+                    </p>
+                    <p className={`text-sm mb-2 truncate ${isLocked ? "text-text-muted" : "text-text-secondary"}`}>
+                      {lesson.subtitle}
+                    </p>
+                    
+                    {!isLocked && (
+                      <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-1">
+                          <Clock size={11} className="text-text-muted" />
+                          <span className="text-text-muted text-xs">
+                            {lesson.steps?.length || 0} заданий
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Star size={11} className="text-gold-bright" />
+                          <span className="text-gold-bright text-xs font-semibold">
+                            +{lesson.pointsReward} pts
+                          </span>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Arrow */}
+                  {!isLocked && <ChevronRight size={20} className={isExam ? "text-pink-neon" : "text-text-muted flex-shrink-0"} />}
+                </motion.button>
+              </motion.div>
+            );
+          })}
         </div>
-
-        {/* Coming soon */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.4 }}
-          className="mt-4 glass rounded-3xl border border-dashed border-bg-border p-6 text-center"
-        >
-          <p className="text-text-muted text-sm">
-            🚀 Больше уроков скоро...
-          </p>
-          <p className="text-text-muted text-xs mt-1">
-            Числа · Цвета · Дни недели · Семья
-          </p>
-        </motion.div>
       </div>
     </main>
   );
