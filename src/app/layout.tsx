@@ -40,13 +40,11 @@ export default function RootLayout({
         <script src="https://telegram.org/js/telegram-web-app.js" async />
       </head>
       <body className="font-inter antialiased bg-bg-deep text-text-primary min-h-screen">
-        <ComingSoon />
-        {/*
+        {/* <ComingSoon /> */}
         <div id="root" className="relative">
           {children}
           <BottomNav />
         </div>
-        */}
       </body>
     </html>
   );
