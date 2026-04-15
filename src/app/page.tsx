@@ -106,16 +106,6 @@ export default function OnboardingPage() {
           </div>
         </motion.div>
 
-        {/* Go to dashboard */}
-        <motion.button
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.5 }}
-          className="text-text-muted text-sm underline underline-offset-4"
-          onClick={() => router.push("/dashboard")}
-        >
-          Перейти в кабинет →
-        </motion.button>
       </div>
     </main>
   );
