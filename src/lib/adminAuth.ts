@@ -3,7 +3,7 @@
 // You can find your Telegram ID by messaging @userinfobot on Telegram.
 
 export const ADMIN_TELEGRAM_IDS: string[] = [
-  // "123456789",  // ← Replace with YOUR real Telegram ID
+  "309975833",  // Oli — Owner
 ];
 
 // Secret URL segment for admin panel access
