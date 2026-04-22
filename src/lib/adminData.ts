@@ -34,6 +34,7 @@ export interface FirebaseUser {
     pending: number;
     total: number;
   };
+  banned?: boolean;
   createdAt?: string;
   lastUpdated?: string;
 }

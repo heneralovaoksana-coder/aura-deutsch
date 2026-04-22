@@ -12,6 +12,8 @@ import {
   X,
   Gift,
   RotateCcw,
+  Ban,
+  Edit3,
 } from "lucide-react";
 import { fetchAllUsers, type FirebaseUser } from "@/lib/adminData";
 import { db } from "@/lib/firebase";
@@ -151,6 +153,22 @@ export default function AdminUsersPage() {
     loadData();
   };
 
+  const handleToggleBan = async (userId: string, currentlyBanned: boolean) => {
+    if (!confirm(currentlyBanned ? "Разбанить пользователя?" : "Точно забанить пользователя? Он не сможет получать баллы.")) return;
+    const userDoc = doc(db, "users", userId);
+    await updateDoc(userDoc, { banned: !currentlyBanned });
+    setSelected(null);
+    loadData();
+  };
+
+  const handleSetLevel = async (userId: string, newLevel: string) => {
+    if (!confirm(`Изменить уровень на ${newLevel}?`)) return;
+    const userDoc = doc(db, "users", userId);
+    await updateDoc(userDoc, { "user.level": newLevel });
+    setSelected(null);
+    loadData();
+  };
+
   return (
     <div className="p-6 lg:p-8 max-w-[1400px]">
       {/* ── Header ───────────────────────────────────── */}
@@ -242,8 +260,9 @@ export default function AdminUsersPage() {
                   {u.user?.avatar || "?"}
                 </div>
                 <div className="min-w-0">
-                  <p className="text-sm font-medium text-white truncate">
+                  <p className="text-sm font-medium text-white truncate flex items-center gap-2">
                     {u.user?.name || "—"}
+                    {u.banned && <span className="px-1.5 py-0.5 rounded bg-red-500/20 text-red-400 text-[9px] uppercase tracking-wider font-bold">Бан</span>}
                   </p>
                   <p className="text-[10px] text-white/25 truncate">
                     ID: {u.id}
@@ -312,8 +331,9 @@ export default function AdminUsersPage() {
                     {selected.user?.avatar || "?"}
                   </div>
                   <div>
-                    <h3 className="font-outfit font-bold text-white">
+                    <h3 className="font-outfit font-bold text-white flex items-center gap-2">
                       {selected.user?.name}
+                      {selected.banned && <span className="px-1.5 py-0.5 rounded bg-red-500/20 text-red-400 text-[10px] uppercase font-bold">Забанен</span>}
                     </h3>
                     <p className="text-xs text-white/30">
                       TG ID: {selected.id} · {selected.user?.status}
@@ -330,10 +350,23 @@ export default function AdminUsersPage() {
 
               {/* Stats */}
               <div className="grid grid-cols-3 gap-3 mb-5">
-                <div className="rounded-xl bg-white/[0.03] p-3 text-center">
+                <div className="rounded-xl bg-white/[0.03] p-3 text-center relative group">
                   <Award size={14} className="mx-auto mb-1 text-amber-400" />
                   <p className="text-xs text-white/40">Уровень</p>
-                  <p className="text-sm font-bold text-white">{selected.user?.level}</p>
+                  <div className="flex items-center justify-center gap-1">
+                    <p className="text-sm font-bold text-white">{selected.user?.level}</p>
+                    <select
+                      className="absolute inset-0 opacity-0 cursor-pointer"
+                      value={selected.user?.level}
+                      onChange={(e) => handleSetLevel(selected.id, e.target.value)}
+                    >
+                      <option value="A0">A0</option>
+                      <option value="A1">A1</option>
+                      <option value="A2">A2</option>
+                      <option value="B1">B1</option>
+                    </select>
+                    <Edit3 size={12} className="text-white/20 group-hover:text-white/60" />
+                  </div>
                 </div>
                 <div className="rounded-xl bg-white/[0.03] p-3 text-center">
                   <Flame size={14} className="mx-auto mb-1 text-orange-400" />
@@ -393,30 +426,48 @@ export default function AdminUsersPage() {
                 <div className="flex items-center gap-2">
                   <input
                     type="number"
-                    min={1}
                     value={bonusAmount || ""}
                     onChange={(e) => setBonusAmount(parseInt(e.target.value) || 0)}
-                    placeholder="Бонусные баллы..."
+                    placeholder="Баллы (+ или -)..."
                     className="flex-1 px-3 py-2 rounded-lg bg-white/[0.04] border border-white/[0.06] text-sm text-white placeholder:text-white/20 focus:outline-none focus:border-emerald-500/30"
                   />
                   <button
                     onClick={() => handleAddBonus(selected.id)}
-                    disabled={bonusAmount <= 0}
-                    className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm font-medium hover:bg-emerald-500/20 transition-colors disabled:opacity-30"
+                    disabled={bonusAmount === 0}
+                    className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-colors disabled:opacity-30 ${
+                      bonusAmount > 0 
+                        ? "bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 hover:bg-emerald-500/20"
+                        : "bg-amber-500/10 border border-amber-500/20 text-amber-400 hover:bg-amber-500/20"
+                    }`}
                   >
                     <Gift size={14} />
-                    Выдать
+                    {bonusAmount > 0 ? "Выдать" : "Забрать"}
                   </button>
                 </div>
 
-                {/* Reset */}
-                <button
-                  onClick={() => handleResetProgress(selected.id)}
-                  className="w-full flex items-center justify-center gap-1.5 px-4 py-2 rounded-lg bg-red-500/5 border border-red-500/10 text-red-400/70 text-sm hover:bg-red-500/10 hover:text-red-400 transition-colors"
-                >
-                  <RotateCcw size={14} />
-                  Сбросить весь прогресс
-                </button>
+                <div className="grid grid-cols-2 gap-2">
+                  {/* Ban/Unban */}
+                  <button
+                    onClick={() => handleToggleBan(selected.id, !!selected.banned)}
+                    className={`flex items-center justify-center gap-1.5 px-4 py-2 rounded-lg border text-sm transition-colors ${
+                      selected.banned
+                        ? "bg-emerald-500/5 border-emerald-500/10 text-emerald-400/70 hover:bg-emerald-500/10 hover:text-emerald-400"
+                        : "bg-red-500/5 border-red-500/10 text-red-400/70 hover:bg-red-500/10 hover:text-red-400"
+                    }`}
+                  >
+                    <Ban size={14} />
+                    {selected.banned ? "Разбанить" : "Забанить"}
+                  </button>
+
+                  {/* Reset */}
+                  <button
+                    onClick={() => handleResetProgress(selected.id)}
+                    className="flex items-center justify-center gap-1.5 px-4 py-2 rounded-lg bg-red-500/5 border border-red-500/10 text-red-400/70 text-sm hover:bg-red-500/10 hover:text-red-400 transition-colors"
+                  >
+                    <RotateCcw size={14} />
+                    Сбросить
+                  </button>
+                </div>
               </div>
             </motion.div>
           </motion.div>
