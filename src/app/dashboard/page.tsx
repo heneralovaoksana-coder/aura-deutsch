@@ -281,7 +281,7 @@ export default function DashboardPage() {
             <motion.div
               animate={{ y: [0, -6, 0] }}
               transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-              className="w-40 h-40 rounded-3xl overflow-hidden mb-3 shadow-rose-soft"
+              className="w-full aspect-video rounded-2xl overflow-hidden mb-3 shadow-rose-soft"
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
