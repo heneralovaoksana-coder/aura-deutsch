@@ -16,6 +16,8 @@ const inter = Inter({
   display: "swap",
 });
 
+import AppInitializer from "@/components/AppInitializer";
+
 export const metadata: Metadata = {
   title: "Aura Deutsch — Learn German",
   description: "Gamified German learning platform in Telegram. Earn ZBT rewards while mastering German.",
@@ -40,6 +42,7 @@ export default function RootLayout({
         <script src="https://telegram.org/js/telegram-web-app.js" async />
       </head>
       <body className="font-inter antialiased bg-bg-deep text-text-primary min-h-screen">
+        <AppInitializer />
         {/* <ComingSoon /> */}
         <div id="root" className="relative">
           {children}
