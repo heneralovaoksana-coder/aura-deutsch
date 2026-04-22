@@ -9,34 +9,35 @@ export default function AppInitializer() {
   const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {
-    if (initialized) return;
+    let timeoutId: NodeJS.Timeout;
     
-    // Attempt to get user. If SDK is loading async, we might need a slight delay
     const checkUser = setInterval(() => {
       if (typeof window !== "undefined" && window.Telegram?.WebApp) {
         const tgUser = getTelegramUser();
         
-        // If testing in normal browser, fake a user to avoid breaking the app
-        const fallbackUser = tgUser || { id: 123456789, first_name: "Local", last_name: "Tester" };
-        
-        initUser(fallbackUser).then(() => {
-          setInitialized(true);
-        });
-        clearInterval(checkUser);
+        if (tgUser?.id) {
+          initUser(tgUser).then(() => setInitialized(true));
+          clearInterval(checkUser);
+          clearTimeout(timeoutId);
+        }
       }
     }, 100);
 
-    // Timeout after 3 seconds to avoid infinite loop
-    setTimeout(() => {
+    // Timeout after 3 seconds for local testing (fallback)
+    timeoutId = setTimeout(() => {
       clearInterval(checkUser);
-      if (!initialized) {
-        initUser({ id: 123456789, first_name: "Local", last_name: "Tester" });
-        setInitialized(true);
+      // Only set fallback if we still haven't found a telegramId in the store
+      const currentTgId = useAppStore.getState().telegramId;
+      if (!currentTgId) {
+        initUser({ id: 123456789, first_name: "Local", last_name: "Tester" }).then(() => setInitialized(true));
       }
     }, 3000);
 
-    return () => clearInterval(checkUser);
-  }, [initUser, initialized]);
+    return () => {
+      clearInterval(checkUser);
+      clearTimeout(timeoutId);
+    };
+  }, [initUser]);
 
   return null;
 }
