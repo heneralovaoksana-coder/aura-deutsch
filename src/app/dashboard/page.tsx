@@ -263,20 +263,40 @@ export default function DashboardPage() {
           </div>
         </motion.div>
 
-        {/* ── 3D Model Placeholder ───────────────────────────────── */}
+        {/* ── Mascot Bird ──────────────────────────────────────────── */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
-          className="glass rounded-3xl border border-dashed border-bg-border p-6 text-center"
+          className="glass rounded-3xl border border-bg-border overflow-hidden relative"
         >
-          <div className="text-4xl mb-3 animate-float">🐦</div>
-          <p className="text-sm font-outfit font-bold text-text-primary mb-1">
-            3D Маскот скоро здесь
-          </p>
-          <p className="text-xs text-text-secondary">
-            Интерактивная 3D-модель нашего птенца Aura
-          </p>
+          {/* Soft glow behind the bird */}
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background: "radial-gradient(circle at 50% 60%, rgba(244,63,111,0.1) 0%, transparent 70%)",
+            }}
+          />
+          <div className="relative flex flex-col items-center py-6 px-4">
+            <motion.div
+              animate={{ y: [0, -6, 0] }}
+              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+              className="w-40 h-40 rounded-3xl overflow-hidden mb-3 shadow-rose-soft"
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/logo-bird.png"
+                alt="Aura Bird Mascot"
+                className="w-full h-full object-cover"
+              />
+            </motion.div>
+            <p className="text-sm font-outfit font-bold text-text-primary mb-0.5">
+              Учись с Aura 🐦
+            </p>
+            <p className="text-xs text-text-secondary">
+              Твой верный спутник в изучении немецкого
+            </p>
+          </div>
         </motion.div>
       </div>
     </main>
