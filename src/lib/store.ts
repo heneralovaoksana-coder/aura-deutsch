@@ -89,9 +89,9 @@ const INITIAL_STATE = {
   user: {
     name: "Пользователь",
     avatar: "П",
-    status: "Активный" as UserStatus,
+    status: "Новичок" as UserStatus,
     level: "A0" as UserLevel,
-    rank: 13,
+    rank: 0,
     rankTarget: 10,
   },
   progress: {
@@ -101,18 +101,18 @@ const INITIAL_STATE = {
     B1: 0,
   },
   points: {
-    total: 1000,
-    todayGain: 45,
-    pointsToTop: 751,
+    total: 0,
+    todayGain: 0,
+    pointsToTop: 2600,
   },
   streak: {
-    days: 3,
+    days: 0,
     lastLoginDate: null,
   },
   balance: {
-    available: 50.0,
-    pending: 30.0,
-    total: 80.0,
+    available: 0,
+    pending: 0,
+    total: 0,
   },
 };
 
