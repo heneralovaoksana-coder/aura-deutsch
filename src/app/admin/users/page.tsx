@@ -108,12 +108,12 @@ export default function AdminUsersPage() {
 
   // ── Admin actions ──
   const handleAddBonus = async (userId: string) => {
-    if (bonusAmount <= 0) return;
+    if (bonusAmount === 0) return;
     const userDoc = doc(db, "users", userId);
     const user = users.find((u) => u.id === userId);
     if (!user) return;
 
-    const newTotal = (user.points?.total || 0) + bonusAmount;
+    const newTotal = Math.max(0, (user.points?.total || 0) + bonusAmount);
     const newReward = parseFloat((newTotal * ZBT_RATE).toFixed(2));
 
     await updateDoc(userDoc, {
