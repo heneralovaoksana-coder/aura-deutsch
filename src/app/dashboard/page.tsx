@@ -2,55 +2,96 @@
 
 export const dynamic = "force-dynamic";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { motion } from "framer-motion";
-import { useAppStore } from "@/lib/store";
 import { initTWA, haptic } from "@/lib/telegram";
-import { useRouter } from "next/navigation";
-import { Play, Flame, Target, BookOpen, ChevronRight } from "lucide-react";
-import { CURRICULUM } from "@/data/lessons";
+import { useAppStore } from "@/lib/store";
+import {
+  Sparkles, Megaphone, ExternalLink, ArrowRight,
+  MessageCircle, Globe, Users, Zap, Gift, TrendingUp,
+} from "lucide-react";
+
+/* ── Mock data for news feed ─────────────────────────────────────── */
+const NEWS = [
+  {
+    id: 1,
+    tag: "Обновление",
+    tagColor: "rose",
+    title: "Новый дизайн платформы",
+    description: "Мы полностью обновили интерфейс: Premium Liquid Glass, новые анимации и улучшенный UX.",
+    date: "22 апреля 2026",
+    icon: <Sparkles size={20} />,
+  },
+  {
+    id: 2,
+    tag: "Новость",
+    tagColor: "indigo",
+    title: "Расширенная база словаря",
+    description: "Добавлено более 200 новых слов в категориях: Путешествия, Бизнес и Повседневный немецкий.",
+    date: "20 апреля 2026",
+    icon: <Megaphone size={20} />,
+  },
+  {
+    id: 3,
+    tag: "Акция",
+    tagColor: "amber",
+    title: "Двойные баллы за серию",
+    description: "На этой неделе все бета-тестеры получают x2 множитель баллов за ежедневную серию!",
+    date: "18 апреля 2026",
+    icon: <Gift size={20} />,
+  },
+  {
+    id: 4,
+    tag: "Событие",
+    tagColor: "emerald",
+    title: "Топ-10 недели",
+    description: "Лучшие участники ЗБТ получат бонусные награды. Поднимайся в рейтинге!",
+    date: "15 апреля 2026",
+    icon: <TrendingUp size={20} />,
+  },
+];
+
+const SOCIALS = [
+  { label: "Telegram", icon: <MessageCircle size={22} />, href: "https://t.me/aura_deutsch", color: "#F43F6F" },
+  { label: "Канал",    icon: <Megaphone size={22} />,     href: "https://t.me/aura_deutsch_news", color: "#6366F1" },
+  { label: "Сайт",     icon: <Globe size={22} />,         href: "https://auradeutsch.com", color: "#10B981" },
+  { label: "Комьюнити",icon: <Users size={22} />,         href: "https://t.me/aura_deutsch_chat", color: "#F59E0B" },
+];
+
+const TAG_COLORS: Record<string, string> = {
+  rose:    "bg-rose-500/10 text-rose-400 border-rose-500/20",
+  indigo:  "bg-indigo-500/10 text-indigo-400 border-indigo-500/20",
+  amber:   "bg-amber-500/10 text-amber-400 border-amber-500/20",
+  emerald: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
+};
 
 export default function DashboardPage() {
-  const { user, points, streak, progress } = useAppStore();
-  const checkAndUpdateStreak = useAppStore((s) => s.checkAndUpdateStreak);
-  const router = useRouter();
-
-  const currentLevelProgress = progress[user.level] || 0;
-  const currentLesson = CURRICULUM[user.level]?.[currentLevelProgress];
-  const totalLessons = CURRICULUM[user.level]?.length || 40;
+  const { user } = useAppStore();
 
   useEffect(() => {
     initTWA();
-    checkAndUpdateStreak();
-  }, [checkAndUpdateStreak]);
-
-  // Calculate daily goal progress (e.g., 30 points per day goal)
-  const dailyGoal = 30;
-  const dailyProgress = Math.min(100, Math.round((points.todayGain / dailyGoal) * 100));
+  }, []);
 
   return (
     <main className="min-h-screen bg-bg-deep pb-32">
-      {/* Ambient background glow */}
+      {/* Ambient mesh background */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
         <div
-          className="absolute -top-32 -right-32 w-96 h-96 rounded-full opacity-15"
-          style={{
-            background: "radial-gradient(circle, #FF007A 0%, transparent 70%)",
-            filter: "blur(60px)",
-          }}
+          className="float-orb w-80 h-80 -top-20 -right-20 opacity-60"
+          style={{ background: "rgba(244, 63, 111, 0.08)" }}
         />
         <div
-          className="absolute top-40 -left-32 w-80 h-80 rounded-full opacity-10"
-          style={{
-            background: "radial-gradient(circle, #8B5CF6 0%, transparent 70%)",
-            filter: "blur(80px)",
-          }}
+          className="float-orb w-64 h-64 top-1/2 -left-20 opacity-40"
+          style={{ background: "rgba(99, 102, 241, 0.06)", animationDelay: "2s" }}
+        />
+        <div
+          className="float-orb w-48 h-48 bottom-20 right-10 opacity-30"
+          style={{ background: "rgba(16, 185, 129, 0.06)", animationDelay: "4s" }}
         />
       </div>
 
       <div className="relative z-10 max-w-lg mx-auto px-4 pt-6 space-y-6">
-        
-        {/* Header greeting */}
+        {/* ── Header ─────────────────────────────────────────────── */}
         <motion.div
           initial={{ opacity: 0, y: -16 }}
           animate={{ opacity: 1, y: 0 }}
@@ -58,176 +99,185 @@ export default function DashboardPage() {
         >
           <div>
             <p className="text-text-secondary text-xs uppercase tracking-widest font-inter mb-1">
-              С возвращением
+              Добро пожаловать
             </p>
-            <h1 className="text-2xl font-outfit font-bold text-white">
+            <h1 className="text-2xl font-outfit font-bold text-text-primary">
               Привет, {user.name}! 👋
             </h1>
           </div>
-          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-neon to-purple-soft flex items-center justify-center text-lg font-outfit font-bold text-white shadow-neon-purple shadow-sm">
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ delay: 0.2, type: "spring" }}
+            className="w-12 h-12 rounded-2xl bg-gradient-to-br from-rose-500 to-rose-600 flex items-center justify-center text-lg font-outfit font-bold text-white shadow-rose-soft"
+          >
             {user.avatar}
-          </div>
+          </motion.div>
         </motion.div>
 
-        {/* Big Continue Learning Card */}
+        {/* ── Hero Banner ────────────────────────────────────────── */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="glass rounded-3xl border border-bg-border overflow-hidden relative"
+          className="glass rounded-3xl overflow-hidden relative"
         >
-          {/* Card Bg FX */}
-          <div className="absolute inset-0 bg-gradient-to-br from-pink-neon/10 to-purple-neon/5" />
-          
-          <div className="relative p-5">
-            <div className="flex items-center justify-between mb-3">
-              <div className="glass-pink px-2.5 py-1 rounded-md flex items-center gap-1">
-                <BookOpen size={12} className="text-pink-neon" />
-                <span className="text-[10px] font-outfit font-semibold text-pink-neon uppercase tracking-wider">
-                  Текущий уровень: {user.level}
-                </span>
-              </div>
-              <div className="text-xs font-bold text-text-muted">
-                {currentLevelProgress + 1} / {totalLessons}
-              </div>
+          {/* Background gradient */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background: "linear-gradient(135deg, rgba(244,63,111,0.12) 0%, rgba(99,102,241,0.08) 100%)",
+            }}
+          />
+          {/* Decorative 3D-like orb */}
+          <div
+            className="absolute -right-8 -top-8 w-40 h-40 rounded-full opacity-30 animate-float-slow"
+            style={{
+              background: "radial-gradient(circle, rgba(244,63,111,0.4) 0%, transparent 70%)",
+              filter: "blur(20px)",
+            }}
+          />
+
+          <div className="relative p-6">
+            <div className="flex items-center gap-2 mb-3">
+              <Zap size={16} className="text-rose-400" />
+              <span className="text-xs font-outfit font-semibold text-rose-400 uppercase tracking-wider">
+                Aura Deutsch · ЗБТ
+              </span>
             </div>
-
-            <h2 className="text-xl font-outfit font-bold text-white mb-1">
-              {currentLesson ? currentLesson.title : "Уровень пройден!"}
+            <h2 className="text-xl font-outfit font-bold text-text-primary mb-2">
+              Учи немецкий. Зарабатывай.
             </h2>
-            <p className="text-sm text-text-secondary mb-6 truncate">
-              {currentLesson ? currentLesson.subtitle : "Ожидайте новых обновлений."}
+            <p className="text-sm text-text-secondary mb-1">
+              Изучай немецкий язык в нашей платформе и получай реальные вознаграждения за свой прогресс.
             </p>
-
-            <button
-              onClick={() => {
-                if (!currentLesson) return;
-                haptic.select();
-                router.push("/lesson");
-              }}
-              disabled={!currentLesson}
-              className={`w-full py-3.5 rounded-2xl font-outfit font-bold text-base flex items-center justify-center gap-2 transition-transform ${
-                currentLesson ? "btn-neon-pink bg-pink-neon text-white hover:scale-[0.98]" : "bg-white/5 text-text-muted cursor-not-allowed"
-              }`}
-            >
-              <Play size={18} fill="currentColor" />
-              {currentLesson ? "Продолжить обучение" : "Скоро"}
-            </button>
+            <div className="glass-rose inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full mt-3">
+              <Sparkles size={12} className="text-rose-400" />
+              <span className="text-xs font-outfit font-semibold text-rose-400">
+                1 балл = $0.08 · Без лимитов
+              </span>
+            </div>
           </div>
         </motion.div>
 
-        {/* Stats Row: Streak & Daily Goal */}
-        <div className="grid grid-cols-2 gap-3">
-          {/* Streak Card */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.2 }}
-            className="glass rounded-3xl border border-bg-border p-4 relative overflow-hidden"
-          >
-            <div className="absolute -right-4 -bottom-4 opacity-10">
-              <Flame size={80} className="text-orange-500" />
-            </div>
-            <div className="relative">
-              <div className="flex items-center gap-2 mb-2">
-                <Flame size={16} className="text-orange-500" fill="currentColor" />
-                <p className="text-xs text-text-muted uppercase tracking-wider">Серия</p>
-              </div>
-              <p className="text-3xl font-outfit font-black text-white mb-1">
-                {streak.days} 
-                <span className="text-base text-text-secondary font-medium ml-1">дней</span>
-              </p>
-              <p className="text-[10px] text-text-secondary leading-tight">
-                Зайди завтра, чтобы не потерять множитель!
-              </p>
-            </div>
-          </motion.div>
-
-          {/* Daily Goal Card */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.3 }}
-            className="glass rounded-3xl border border-bg-border p-4 relative overflow-hidden"
-          >
-            <div className="absolute -right-4 -bottom-4 opacity-10">
-              <Target size={80} className="text-green-money" />
-            </div>
-            <div className="relative">
-              <div className="flex items-center gap-2 mb-2">
-                <Target size={16} className="text-green-money" />
-                <p className="text-xs text-text-muted uppercase tracking-wider">Цель</p>
-              </div>
-              <p className="text-3xl font-outfit font-black text-white mb-2">
-                {points.todayGain}
-                <span className="text-base text-text-secondary font-medium ml-1">/ {dailyGoal}</span>
-              </p>
-              
-              {/* Mini progress bar */}
-              <div className="h-1.5 w-full bg-bg-deep rounded-full overflow-hidden">
-                <motion.div 
-                  className="h-full bg-green-money rounded-full"
-                  initial={{ width: 0 }}
-                  animate={{ width: `${dailyProgress}%` }}
-                  transition={{ delay: 0.8, duration: 1 }}
-                />
-              </div>
-              <p className="text-[10px] text-text-secondary mt-1.5">
-                {dailyProgress >= 100 ? "Цель выполнена! 🎉" : "Очки за сегодня"}
-              </p>
-            </div>
-          </motion.div>
-        </div>
-
-        {/* Word of the Day */}
+        {/* ── Social Media ───────────────────────────────────────── */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-          className="glass rounded-3xl border border-dashed border-bg-border p-5"
+          transition={{ delay: 0.2 }}
         >
-          <div className="flex items-center justify-between mb-4">
-            <p className="text-xs text-text-muted uppercase tracking-widest">Слово дня</p>
-            <div className="px-2 py-0.5 rounded text-[10px] uppercase font-bold bg-white/5 text-text-secondary">
-              A1
-            </div>
-          </div>
-          <div className="text-center pb-2">
-            <h3 className="text-3xl font-outfit font-black text-white mb-1">
-              wunderschön
-            </h3>
-            <p className="text-pink-neon font-outfit font-semibold mb-3">
-              (прекрасный, чудесный)
-            </p>
-            <p className="text-sm text-text-secondary italic">
-              «Das Wetter heute ist wunderschön!»
-            </p>
+          <p className="text-text-muted text-xs uppercase tracking-widest mb-3 font-outfit">
+            Мы в соцсетях
+          </p>
+          <div className="grid grid-cols-4 gap-2">
+            {SOCIALS.map((social, i) => (
+              <motion.a
+                key={social.label}
+                href={social.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => haptic.tap()}
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.25 + i * 0.06 }}
+                whileTap={{ scale: 0.94 }}
+                className="glass rounded-2xl p-3 flex flex-col items-center gap-2 hover:border-bg-hover transition-all border border-transparent"
+              >
+                <div
+                  className="w-10 h-10 rounded-xl flex items-center justify-center text-white"
+                  style={{ background: `${social.color}18`, color: social.color }}
+                >
+                  {social.icon}
+                </div>
+                <span className="text-[10px] font-outfit font-medium text-text-secondary">
+                  {social.label}
+                </span>
+              </motion.a>
+            ))}
           </div>
         </motion.div>
 
-        {/* Navigate to profile hint */}
+        {/* ── News Feed ──────────────────────────────────────────── */}
         <motion.div
-           initial={{ opacity: 0 }}
-           animate={{ opacity: 1 }}
-           transition={{ delay: 0.6 }}
-           onClick={() => {
-             haptic.tap();
-             router.push("/profile");
-           }}
-           className="glass border border-bg-border rounded-2xl p-4 flex items-center justify-between active:scale-95 transition-transform"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3 }}
         >
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-full bg-pink-neon/20 flex items-center justify-center">
-              <span className="text-pink-neon">💸</span>
-            </div>
-            <div>
-              <p className="text-sm font-outfit font-bold text-white">Статистика и баланс</p>
-              <p className="text-xs text-text-secondary">Проверяй свои накопления ЗБТ</p>
-            </div>
+          <div className="flex items-center justify-between mb-3">
+            <p className="text-text-muted text-xs uppercase tracking-widest font-outfit">
+              Новости и обновления
+            </p>
+            <span className="text-rose-400 text-xs font-outfit font-semibold flex items-center gap-1">
+              Все <ArrowRight size={12} />
+            </span>
           </div>
-          <ChevronRight size={16} className="text-text-muted" />
+
+          <div className="space-y-3">
+            {NEWS.map((item, i) => (
+              <motion.div
+                key={item.id}
+                initial={{ opacity: 0, x: -16 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.35 + i * 0.08 }}
+                className="glass rounded-2xl border border-bg-border p-4 hover:border-bg-hover transition-all group cursor-pointer"
+              >
+                <div className="flex items-start gap-3">
+                  {/* Icon */}
+                  <div
+                    className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5"
+                    style={{
+                      background: item.tagColor === "rose" ? "rgba(244,63,111,0.1)"
+                        : item.tagColor === "indigo" ? "rgba(99,102,241,0.1)"
+                        : item.tagColor === "amber" ? "rgba(245,158,11,0.1)"
+                        : "rgba(16,185,129,0.1)",
+                      color: item.tagColor === "rose" ? "#F43F6F"
+                        : item.tagColor === "indigo" ? "#818CF8"
+                        : item.tagColor === "amber" ? "#FBBF24"
+                        : "#34D399",
+                    }}
+                  >
+                    {item.icon}
+                  </div>
+
+                  {/* Content */}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className={`text-[10px] font-outfit font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full border ${TAG_COLORS[item.tagColor]}`}>
+                        {item.tag}
+                      </span>
+                      <span className="text-text-muted text-[10px]">{item.date}</span>
+                    </div>
+                    <h3 className="text-sm font-outfit font-bold text-text-primary mb-1 group-hover:text-rose-400 transition-colors">
+                      {item.title}
+                    </h3>
+                    <p className="text-xs text-text-secondary leading-relaxed line-clamp-2">
+                      {item.description}
+                    </p>
+                  </div>
+
+                  {/* Arrow */}
+                  <ExternalLink size={14} className="text-text-muted group-hover:text-rose-400 transition-colors flex-shrink-0 mt-2" />
+                </div>
+              </motion.div>
+            ))}
+          </div>
         </motion.div>
 
+        {/* ── 3D Model Placeholder ───────────────────────────────── */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+          className="glass rounded-3xl border border-dashed border-bg-border p-6 text-center"
+        >
+          <div className="text-4xl mb-3 animate-float">🐦</div>
+          <p className="text-sm font-outfit font-bold text-text-primary mb-1">
+            3D Маскот скоро здесь
+          </p>
+          <p className="text-xs text-text-secondary">
+            Интерактивная 3D-модель нашего птенца Aura
+          </p>
+        </motion.div>
       </div>
     </main>
   );

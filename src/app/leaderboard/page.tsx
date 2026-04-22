@@ -22,13 +22,13 @@ const tabs = ["ТОП", "Активный", "Новичок"] as const;
 type Tab = typeof tabs[number];
 
 const avatarColors = [
-  "from-gold-bright to-gold-soft",
+  "from-amber-400 to-amber-500",
   "from-gray-400 to-gray-600",
   "from-amber-600 to-amber-800",
-  "from-purple-neon to-purple-soft",
+  "from-indigo-500 to-indigo-400",
   "from-blue-500 to-blue-700",
-  "from-green-money to-green-soft",
-  "from-pink-neon to-pink-soft",
+  "from-emerald-400 to-green-soft",
+  "from-rose-500 to-pink-soft",
 ];
 
 export default function LeaderboardPage() {
@@ -47,7 +47,7 @@ export default function LeaderboardPage() {
       <div className="fixed inset-0 pointer-events-none">
         <div
           className="absolute top-0 right-0 w-72 h-72 opacity-15 rounded-full"
-          style={{ background: "radial-gradient(circle, #FFD700 0%, transparent 70%)", filter: "blur(60px)" }}
+          style={{ background: "radial-gradient(circle, #FBBF24 0%, transparent 70%)", filter: "blur(60px)" }}
         />
       </div>
 
@@ -59,8 +59,8 @@ export default function LeaderboardPage() {
           animate={{ opacity: 1, y: 0 }}
         >
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-gold-soft/20 flex items-center justify-center">
-              <Users size={20} className="text-gold-bright" />
+            <div className="w-10 h-10 rounded-2xl bg-amber-500/20 flex items-center justify-center">
+              <Users size={20} className="text-amber-400" />
             </div>
             <div>
               <h1 className="text-xl font-outfit font-bold text-white">
@@ -71,9 +71,9 @@ export default function LeaderboardPage() {
           </div>
 
           {/* Live indicator */}
-          <div className="flex items-center gap-1.5 glass border border-green-money/30 px-3 py-1.5 rounded-full">
-            <div className="w-2 h-2 rounded-full bg-green-money animate-pulse" />
-            <span className="text-green-money text-xs font-outfit font-semibold">Live</span>
+          <div className="flex items-center gap-1.5 glass border border-emerald-400/30 px-3 py-1.5 rounded-full">
+            <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <span className="text-emerald-400 text-xs font-outfit font-semibold">Live</span>
           </div>
         </motion.div>
 
@@ -92,9 +92,9 @@ export default function LeaderboardPage() {
                 className={`px-3 py-1.5 rounded-full text-xs font-outfit font-semibold transition-all duration-200 ${
                   activeTab === tab
                     ? tab === "ТОП"
-                      ? "bg-gold-bright/20 border border-gold-bright/40 text-gold-bright"
+                      ? "bg-amber-400/20 border border-amber-400/40 text-amber-400"
                       : tab === "Активный"
-                      ? "glass-pink text-pink-neon"
+                      ? "glass-rose text-rose-500"
                       : "glass border border-bg-border text-white"
                     : "glass border border-bg-border text-text-secondary hover:text-white"
                 }`}
@@ -145,7 +145,7 @@ export default function LeaderboardPage() {
                   <p className="text-white font-outfit font-semibold text-sm truncate">
                     {player.name}
                   </p>
-                  <p className="text-gold-bright text-[11px] font-inter">
+                  <p className="text-amber-400 text-[11px] font-inter">
                     {player.status}
                   </p>
                 </div>
@@ -156,7 +156,7 @@ export default function LeaderboardPage() {
                     {player.points.toLocaleString("ru-RU")}
                   </p>
                   <p className="text-[10px] text-text-muted">баллов</p>
-                  <p className="text-green-money font-outfit font-bold text-sm">
+                  <p className="text-emerald-400 font-outfit font-bold text-sm">
                     ${calcReward(player.points).toFixed(2)}
                   </p>
                   <p className="text-[10px] text-text-muted">возн.</p>
@@ -166,7 +166,7 @@ export default function LeaderboardPage() {
                 <div className="w-16 flex-shrink-0">
                   <div className="progress-track h-1">
                     <div
-                      className="progress-fill-green"
+                      className="progress-fill-emerald"
                       style={{ width: `${Math.min(100, (player.points / 4000) * 100)}%` }}
                     />
                   </div>
@@ -197,13 +197,13 @@ export default function LeaderboardPage() {
         >
           {/* Rank */}
           <div className="w-10 text-center flex-shrink-0">
-            <span className="text-pink-neon font-outfit font-black text-sm">
+            <span className="text-rose-500 font-outfit font-black text-sm">
               #{user.rank}
             </span>
           </div>
 
           {/* Avatar */}
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-pink-neon to-purple-neon flex items-center justify-center text-sm font-outfit font-bold text-white flex-shrink-0 shadow-neon-pink-sm">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-rose-500 to-indigo-500 flex items-center justify-center text-sm font-outfit font-bold text-white flex-shrink-0 shadow-rose-soft">
             {user.avatar}
           </div>
 
@@ -212,7 +212,7 @@ export default function LeaderboardPage() {
             <p className="text-white font-outfit font-semibold text-sm truncate">
               {user.name} <span className="text-text-muted font-normal">(Вы)</span>
             </p>
-            <p className="text-pink-neon text-[11px] font-inter">{user.status}</p>
+            <p className="text-rose-500 text-[11px] font-inter">{user.status}</p>
           </div>
 
           {/* Points + reward */}
@@ -221,7 +221,7 @@ export default function LeaderboardPage() {
               {points.total.toLocaleString("ru-RU")}
             </p>
             <p className="text-[10px] text-text-muted">баллов</p>
-            <p className="text-green-money font-outfit font-bold text-sm">
+            <p className="text-emerald-400 font-outfit font-bold text-sm">
               ${calcReward(points.total).toFixed(2)}
             </p>
             <p className="text-[10px] text-text-muted">возн.</p>
@@ -231,7 +231,7 @@ export default function LeaderboardPage() {
           <div className="w-16 flex-shrink-0">
             <div className="progress-track h-1">
               <div
-                className="progress-fill-pink"
+                className="progress-fill-rose"
                 style={{ width: `${Math.min(100, (points.total / 4000) * 100)}%` }}
               />
             </div>

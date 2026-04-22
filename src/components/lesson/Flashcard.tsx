@@ -116,8 +116,8 @@ export default function Flashcard({ card, onComplete }: FlashcardProps) {
               <div
                 className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-outfit font-semibold ${
                   card.tag === "сленг"
-                    ? "bg-pink-neon/20 text-pink-neon border border-pink-neon/30"
-                    : "bg-purple-neon/20 text-purple-soft border border-purple-neon/30"
+                    ? "bg-rose-500/20 text-rose-500 border border-rose-500/30"
+                    : "bg-indigo-500/20 text-indigo-400 border border-indigo-500/30"
                 }`}
               >
                 {card.tag === "сленг" ? "💬 Сленг" : "📚 Официальный"}
@@ -146,7 +146,7 @@ export default function Flashcard({ card, onComplete }: FlashcardProps) {
             }}
           >
             <div
-              className="glass rounded-3xl border border-pink-neon/30 p-8 text-center"
+              className="glass rounded-3xl border border-rose-500/30 p-8 text-center"
               style={{
                 background:
                   "linear-gradient(135deg, rgba(255,0,122,0.12) 0%, rgba(17,21,25,0.95) 100%)",
@@ -163,12 +163,12 @@ export default function Flashcard({ card, onComplete }: FlashcardProps) {
               {/* Example */}
               <div className="bg-bg-deep rounded-2xl p-4 text-left mb-4">
                 <div className="flex items-start justify-between gap-2 mb-1">
-                  <p className="text-pink-neon font-outfit font-semibold text-base">
+                  <p className="text-rose-500 font-outfit font-semibold text-base">
                     "{card.example}"
                   </p>
                   <button
                     onClick={playExampleAudio}
-                    className="w-8 h-8 bg-pink-neon/10 rounded-full flex items-center justify-center text-pink-neon border border-pink-neon/20 hover:bg-pink-neon/20 shrink-0"
+                    className="w-8 h-8 bg-rose-500/10 rounded-full flex items-center justify-center text-rose-500 border border-rose-500/20 hover:bg-rose-500/20 shrink-0"
                   >
                     <Play size={14} fill="currentColor" />
                   </button>
@@ -193,7 +193,7 @@ export default function Flashcard({ card, onComplete }: FlashcardProps) {
             transition={{ type: "spring", stiffness: 300, damping: 20, delay: 0.3 }}
             whileTap={{ scale: 0.95 }}
             onClick={handleGotIt}
-            className="mt-8 w-full max-w-sm btn-neon-pink py-4 rounded-2xl font-outfit font-bold text-lg"
+            className="mt-8 w-full max-w-sm btn-rose py-4 rounded-2xl font-outfit font-bold text-lg"
           >
             ✓ Понял, дальше!
           </motion.button>

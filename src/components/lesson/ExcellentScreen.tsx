@@ -13,7 +13,7 @@ interface ExcellentScreenProps {
 
 // Simple confetti particle
 function Particle({ delay }: { delay: number }) {
-  const colors = ["#FF007A", "#00FF94", "#8B5CF6", "#FFD700", "#FF4DA6"];
+  const colors = ["#F43F6F", "#10B981", "#6366F1", "#FBBF24", "#FF4DA6"];
   const color = colors[Math.floor(Math.random() * colors.length)];
   const x = Math.random() * 100;
   const size = Math.random() * 8 + 4;
@@ -119,18 +119,18 @@ export default function ExcellentScreen({
             stiffness: 250,
             damping: 15,
           }}
-          className="glass-pink rounded-3xl px-8 py-6 border border-pink-neon/30"
+          className="glass-rose rounded-3xl px-8 py-6 border border-rose-500/30"
         >
           <p className="text-text-secondary text-sm mb-1">Заработано</p>
           <motion.p
-            className="text-6xl font-outfit font-black text-neon-pink"
+            className="text-6xl font-outfit font-black text-rose-400"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.7 }}
           >
             +{points}
           </motion.p>
-          <p className="text-pink-neon text-sm font-outfit font-semibold mt-1">
+          <p className="text-rose-500 text-sm font-outfit font-semibold mt-1">
             баллов ЗБТ
           </p>
           <p className="text-text-muted text-xs mt-2">
@@ -176,7 +176,7 @@ export default function ExcellentScreen({
               haptic.tap();
               router.push("/lesson");
             }}
-            className="w-full btn-neon-pink py-4 rounded-2xl font-outfit font-bold text-lg"
+            className="w-full btn-rose py-4 rounded-2xl font-outfit font-bold text-lg"
           >
             Следующий урок →
           </motion.button>

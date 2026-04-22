@@ -35,7 +35,7 @@ export default function RootLayout({
   return (
     <html lang="ru" className={`${outfit.variable} ${inter.variable}`}>
       <head>
-        <meta name="theme-color" content="#0B0E11" />
+        <meta name="theme-color" content="#0C0F14" />
         {/* Telegram Web App SDK */}
         <script src="https://telegram.org/js/telegram-web-app.js" async />
       </head>

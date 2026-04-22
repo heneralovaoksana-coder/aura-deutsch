@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Zap, ChevronRight } from "lucide-react";
+import { ChevronRight, Zap } from "lucide-react";
 import ProgressBar from "@/components/ui/ProgressBar";
 import { UserState, PointsState } from "@/lib/store";
 
@@ -12,7 +12,7 @@ interface ProfileHeaderProps {
 
 export default function ProfileHeader({ user, points }: ProfileHeaderProps) {
   // Calculate progress % toward TOP rank
-  const topThreshold = 2600; // approximate points for TOP-10
+  const topThreshold = 2600;
   const progressToTop = Math.min(
     100,
     Math.round(((topThreshold - points.pointsToTop) / topThreshold) * 100)
@@ -31,11 +31,11 @@ export default function ProfileHeader({ user, points }: ProfileHeaderProps) {
         <div className="flex items-center gap-3">
           {/* Avatar */}
           <div className="relative">
-            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-neon to-purple-soft flex items-center justify-center text-xl font-outfit font-bold text-white shadow-neon-purple">
+            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-rose-500 to-rose-600 flex items-center justify-center text-xl font-outfit font-bold text-white shadow-rose-soft">
               {user.avatar}
             </div>
             {/* Online dot */}
-            <div className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-green-money border-2 border-bg-deep shadow-neon-green-sm" />
+            <div className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-emerald-400 border-2 border-bg-deep shadow-emerald-soft" />
           </div>
 
           {/* Name + tag */}
@@ -43,7 +43,7 @@ export default function ProfileHeader({ user, points }: ProfileHeaderProps) {
             <p className="text-xs text-text-secondary font-inter uppercase tracking-widest mb-0.5">
               Личный кабинет
             </p>
-            <h1 className="text-2xl font-outfit font-bold text-white leading-tight">
+            <h1 className="text-2xl font-outfit font-bold text-text-primary leading-tight">
               {user.name}
             </h1>
           </div>
@@ -57,17 +57,17 @@ export default function ProfileHeader({ user, points }: ProfileHeaderProps) {
           transition={{ delay: 0.2, type: "spring", stiffness: 300 }}
         >
           {/* Status chip */}
-          <div className="glass-pink px-2 py-1 rounded-full flex items-center gap-1 whitespace-nowrap">
-            <Zap size={10} className="text-pink-neon" />
-            <span className="text-[10px] font-outfit font-semibold text-pink-neon">
+          <div className="glass-rose px-2.5 py-1 rounded-full flex items-center gap-1 whitespace-nowrap">
+            <Zap size={10} className="text-rose-400" />
+            <span className="text-[10px] font-outfit font-semibold text-rose-400">
               ЗБТ Тест
             </span>
           </div>
 
           {/* Active status */}
-          <div className="glass px-2 py-1 rounded-full flex items-center gap-1 border border-green-money/30 whitespace-nowrap">
-            <div className="w-1.5 h-1.5 rounded-full bg-green-money animate-pulse" />
-            <span className="text-[10px] font-outfit font-semibold text-green-money">
+          <div className="glass px-2.5 py-1 rounded-full flex items-center gap-1 border border-emerald-500/20 whitespace-nowrap">
+            <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            <span className="text-[10px] font-outfit font-semibold text-emerald-400">
               Активный
             </span>
           </div>
@@ -84,10 +84,10 @@ export default function ProfileHeader({ user, points }: ProfileHeaderProps) {
         <div className="flex items-center justify-between mb-3">
           {/* Left: label */}
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg bg-pink-neon/20 flex items-center justify-center">
-              <ChevronRight size={14} className="text-pink-neon" />
+            <div className="w-7 h-7 rounded-lg bg-rose-500/12 flex items-center justify-center">
+              <ChevronRight size={14} className="text-rose-400" />
             </div>
-            <span className="text-sm font-outfit font-semibold text-white">
+            <span className="text-sm font-outfit font-semibold text-text-primary">
               До уровня ТОП
             </span>
           </div>
@@ -95,7 +95,7 @@ export default function ProfileHeader({ user, points }: ProfileHeaderProps) {
           {/* Right: stats */}
           <div className="flex items-center gap-3 text-right">
             <motion.span
-              className="text-sm font-outfit font-bold text-white"
+              className="text-sm font-outfit font-bold text-text-primary"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.5 }}
@@ -108,13 +108,13 @@ export default function ProfileHeader({ user, points }: ProfileHeaderProps) {
           </div>
         </div>
 
-        {/* Gradient progress bar (pink → purple) */}
+        {/* Gradient progress bar */}
         <div className="progress-track h-2">
           <motion.div
             className="h-full rounded-full"
             style={{
-              background: "linear-gradient(90deg, #FF007A 0%, #8B5CF6 60%, #FF4DA6 100%)",
-              boxShadow: "0 0 12px #FF007A88, 0 0 24px #8B5CF633",
+              background: "linear-gradient(90deg, #F43F6F 0%, #6366F1 60%, #FF7090 100%)",
+              boxShadow: "0 0 12px rgba(244,63,111,0.3)",
             }}
             initial={{ width: 0 }}
             animate={{ width: `${progressToTop}%` }}

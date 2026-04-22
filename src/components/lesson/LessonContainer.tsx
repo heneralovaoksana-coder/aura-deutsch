@@ -100,7 +100,7 @@ export default function LessonContainer({ lesson }: LessonContainerProps) {
         <div
           className="absolute -top-20 left-1/2 -translate-x-1/2 w-72 h-72 opacity-20 rounded-full"
           style={{
-            background: "radial-gradient(circle, #FF007A 0%, transparent 70%)",
+            background: "radial-gradient(circle, #F43F6F 0%, transparent 70%)",
             filter: "blur(60px)",
           }}
         />

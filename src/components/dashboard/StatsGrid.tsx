@@ -56,7 +56,6 @@ export default function StatsGrid({ points, balance, rank, onWithdraw }: StatsGr
 
   return (
     <div className="px-4 py-3 space-y-3">
-      {/* ── Row of 3 cards ─────────────────────────────────────── */}
       <div className="grid grid-cols-1 gap-3">
 
         {/* ── Card 1: Баллы ───────────────────────────────────── */}
@@ -67,57 +66,53 @@ export default function StatsGrid({ points, balance, rank, onWithdraw }: StatsGr
           animate="visible"
           className="glass rounded-3xl border border-bg-border p-5"
         >
-          {/* Header */}
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-xl bg-purple-neon/20 flex items-center justify-center">
-                <Activity size={16} className="text-purple-soft" />
+              <div className="w-8 h-8 rounded-xl bg-indigo-500/12 flex items-center justify-center">
+                <Activity size={16} className="text-indigo-400" />
               </div>
               <div>
                 <p className="text-[10px] text-text-secondary uppercase tracking-widest font-inter">
                   Активность · ЗБТ
                 </p>
-                <p className="text-base font-outfit font-bold text-white">Баллы</p>
+                <p className="text-base font-outfit font-bold text-text-primary">Баллы</p>
               </div>
             </div>
           </div>
 
-          {/* Big number */}
           <AnimatePresence mode="wait">
             <div className="mb-4">
               <AnimatedNumber
                 value={points.total}
-                className="text-5xl font-outfit font-black text-white"
+                className="text-5xl font-outfit font-black text-text-primary"
                 delay={0.1}
               />
               <p className="text-text-secondary text-sm mt-0.5">накоплено баллов</p>
             </div>
           </AnimatePresence>
 
-          {/* Today + Rank row */}
           <div className="flex gap-4">
             <div className="flex items-center gap-1.5">
-              <TrendingUp size={14} className="text-green-money" />
+              <TrendingUp size={14} className="text-emerald-400" />
               <div>
-                <p className="text-green-money font-outfit font-bold text-sm">
+                <p className="text-emerald-400 font-outfit font-bold text-sm">
                   +{points.todayGain}
                 </p>
                 <p className="text-text-muted text-[10px] uppercase tracking-wider">Сегодня</p>
               </div>
             </div>
             <div className="flex items-center gap-1.5">
-              <ArrowUpRight size={14} className="text-gold-bright" />
+              <ArrowUpRight size={14} className="text-amber-400" />
               <div>
-                <p className="text-gold-bright font-outfit font-bold text-sm">#{rank}</p>
+                <p className="text-amber-400 font-outfit font-bold text-sm">#{rank}</p>
                 <p className="text-text-muted text-[10px] uppercase tracking-wider">В рейтинге</p>
               </div>
             </div>
           </div>
 
-          {/* Rate chip */}
-          <div className="mt-4 glass-pink rounded-xl px-3 py-2 flex items-center gap-2">
-            <Star size={12} className="text-pink-neon" />
-            <span className="text-xs font-outfit text-pink-neon font-semibold">
+          <div className="mt-4 glass-rose rounded-xl px-3 py-2 flex items-center gap-2">
+            <Star size={12} className="text-rose-400" />
+            <span className="text-xs font-outfit text-rose-400 font-semibold">
               1 балл = ${ZBT_RATE}
             </span>
           </div>
@@ -135,67 +130,63 @@ export default function StatsGrid({ points, balance, rank, onWithdraw }: StatsGr
           animate="visible"
           className="glass rounded-3xl border border-bg-border p-5"
         >
-          {/* Header */}
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-xl bg-gold-soft/20 flex items-center justify-center">
-                <Trophy size={16} className="text-gold-bright" />
+              <div className="w-8 h-8 rounded-xl bg-amber-500/12 flex items-center justify-center">
+                <Trophy size={16} className="text-amber-400" />
               </div>
               <div>
                 <p className="text-[10px] text-text-secondary uppercase tracking-widest font-inter">
                   Расчёт · ЗБТ
                 </p>
-                <p className="text-base font-outfit font-bold text-white">Вознаграждение</p>
+                <p className="text-base font-outfit font-bold text-text-primary">Вознаграждение</p>
               </div>
             </div>
           </div>
 
-          {/* Status badges */}
           <div className="flex gap-2 mb-4">
-            <div className="glass-pink px-2.5 py-1 rounded-full flex items-center gap-1">
-              <div className="w-1.5 h-1.5 rounded-full bg-pink-neon" />
-              <span className="text-[11px] font-outfit font-semibold text-pink-neon">Активный</span>
+            <div className="glass-rose px-2.5 py-1 rounded-full flex items-center gap-1">
+              <div className="w-1.5 h-1.5 rounded-full bg-rose-500" />
+              <span className="text-[11px] font-outfit font-semibold text-rose-400">Активный</span>
             </div>
             <div className="glass border border-bg-border px-2.5 py-1 rounded-full flex items-center gap-1">
               <span className="text-[11px] text-text-secondary">👤 #{rank}</span>
             </div>
           </div>
 
-          {/* Formula display */}
           <div className="bg-bg-deep rounded-2xl p-4 mb-4">
             <p className="text-[10px] text-text-muted uppercase tracking-widest mb-2">Формула ЗБТ</p>
             <div className="flex items-center gap-2 flex-wrap">
-              <span className="text-white font-outfit font-bold text-lg">
+              <span className="text-text-primary font-outfit font-bold text-lg">
                 {points.total.toLocaleString("ru-RU")}
               </span>
               <span className="text-text-secondary">×</span>
-              <span className="text-pink-neon font-outfit font-bold text-lg">${ZBT_RATE}</span>
+              <span className="text-rose-400 font-outfit font-bold text-lg">${ZBT_RATE}</span>
               <span className="text-text-secondary">=</span>
               <AnimatedNumber
                 value={reward}
                 prefix="$"
-                className="text-pink-neon font-outfit font-black text-xl"
+                className="text-rose-400 font-outfit font-black text-xl"
                 delay={0.4}
               />
             </div>
           </div>
 
-          {/* Expected reward */}
-          <div className="border border-gold-soft/30 bg-gold-soft/5 rounded-2xl p-4">
-            <p className="text-[10px] text-gold-bright uppercase tracking-widest mb-2">
+          <div className="border border-amber-500/20 bg-amber-500/5 rounded-2xl p-4">
+            <p className="text-[10px] text-amber-400 uppercase tracking-widest mb-2">
               ⚡ Ожидаемое вознаграждение
             </p>
             <AnimatedNumber
               value={reward}
               prefix="$"
-              className="text-gold-bright font-outfit font-black text-4xl"
+              className="text-amber-400 font-outfit font-black text-4xl"
               delay={0.5}
             />
           </div>
 
           <p className="text-text-muted text-xs mt-3 leading-relaxed">
             В режиме бета-тестирования вознаграждение рассчитывается напрямую на основе вашей активности:{" "}
-            <span className="text-white font-semibold">1 балл = ${ZBT_RATE}</span>
+            <span className="text-text-primary font-semibold">1 балл = ${ZBT_RATE}</span>
           </p>
         </motion.div>
 
@@ -207,22 +198,20 @@ export default function StatsGrid({ points, balance, rank, onWithdraw }: StatsGr
           animate="visible"
           className="glass rounded-3xl border border-bg-border p-5"
         >
-          {/* Header */}
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-xl bg-green-money/20 flex items-center justify-center">
-                <Wallet size={16} className="text-green-money" />
+              <div className="w-8 h-8 rounded-xl bg-emerald-500/12 flex items-center justify-center">
+                <Wallet size={16} className="text-emerald-400" />
               </div>
               <div>
                 <p className="text-[10px] text-text-secondary uppercase tracking-widest font-inter">
                   Финансы · ЗБТ
                 </p>
-                <p className="text-base font-outfit font-bold text-white">Баланс</p>
+                <p className="text-base font-outfit font-bold text-text-primary">Баланс</p>
               </div>
             </div>
           </div>
 
-          {/* Available */}
           <div className="mb-4">
             <p className="text-[10px] text-text-muted uppercase tracking-widest mb-1">
               Доступно для вывода
@@ -230,17 +219,16 @@ export default function StatsGrid({ points, balance, rank, onWithdraw }: StatsGr
             <AnimatedNumber
               value={balance.available}
               prefix="$"
-              className="text-green-money font-outfit font-black text-5xl text-neon-green"
+              className="text-emerald-400 font-outfit font-black text-5xl"
               delay={0.3}
             />
           </div>
 
-          {/* Pending + Total row */}
           <div className="grid grid-cols-2 gap-3 mb-5">
             <div className="bg-bg-deep rounded-2xl p-3">
               <div className="flex items-center gap-1.5 mb-1">
-                <Clock size={12} className="text-gold-soft" />
-                <span className="text-gold-soft font-outfit font-bold text-sm">
+                <Clock size={12} className="text-amber-500" />
+                <span className="text-amber-500 font-outfit font-bold text-sm">
                   ${balance.pending.toFixed(2)}
                 </span>
               </div>
@@ -249,7 +237,7 @@ export default function StatsGrid({ points, balance, rank, onWithdraw }: StatsGr
             <div className="bg-bg-deep rounded-2xl p-3">
               <div className="flex items-center gap-1.5 mb-1">
                 <ArrowUpRight size={12} className="text-text-secondary" />
-                <span className="text-white font-outfit font-bold text-sm">
+                <span className="text-text-primary font-outfit font-bold text-sm">
                   ${balance.total.toFixed(2)}
                 </span>
               </div>
@@ -257,12 +245,11 @@ export default function StatsGrid({ points, balance, rank, onWithdraw }: StatsGr
             </div>
           </div>
 
-          {/* Flow steps */}
           <div className="space-y-2 mb-5">
             {[
-              { icon: <Activity size={12} />, text: "Активность → Баллы", color: "text-purple-soft" },
-              { icon: <Trophy size={12} />, text: `Баллы × $${ZBT_RATE} = Вознаграждение`, color: "text-gold-bright" },
-              { icon: <Banknote size={12} />, text: "Зачисление на баланс", color: "text-green-money" },
+              { icon: <Activity size={12} />, text: "Активность → Баллы", color: "text-indigo-400" },
+              { icon: <Trophy size={12} />, text: `Баллы × $${ZBT_RATE} = Вознаграждение`, color: "text-amber-400" },
+              { icon: <Banknote size={12} />, text: "Зачисление на баланс", color: "text-emerald-400" },
             ].map((item, i) => (
               <motion.div
                 key={i}
@@ -277,7 +264,6 @@ export default function StatsGrid({ points, balance, rank, onWithdraw }: StatsGr
             ))}
           </div>
 
-          {/* Withdraw CTA */}
           <NeonButton
             id="withdraw-btn"
             variant="green"

@@ -35,10 +35,10 @@ export default function NeonButton({
   };
 
   const variants = {
-    pink: "btn-neon-pink",
-    green: "btn-neon-green",
-    ghost: "bg-white/5 border border-white/10 text-white hover:bg-white/10 rounded-2xl transition-all",
-    "outline-pink": "bg-transparent border border-pink-neon text-pink-neon hover:bg-pink-neon/10 rounded-2xl transition-all shadow-neon-pink-sm",
+    pink:         "btn-rose",
+    green:        "btn-emerald",
+    ghost:        "btn-ghost",
+    "outline-pink": "btn-outline-rose",
   };
 
   const handleClick = () => {

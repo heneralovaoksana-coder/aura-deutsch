@@ -1,15 +1,15 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { Home, User, HeadphonesIcon, BookOpen } from "lucide-react";
 import { haptic } from "@/lib/telegram";
 
 const NAV_ITEMS = [
-  { icon: Home,            label: "Главная",   href: "/dashboard" },
-  { icon: BookOpen,        label: "Словарь",   href: "/dictionary" },
-  { icon: User,            label: "Профиль",   href: "/profile"   },
-  { icon: HeadphonesIcon,  label: "Поддержка", href: "/support"   },
+  { icon: Home,           label: "Главная",   href: "/dashboard" },
+  { icon: BookOpen,       label: "Словарь",   href: "/dictionary" },
+  { icon: User,           label: "Профиль",   href: "/profile"   },
+  { icon: HeadphonesIcon, label: "Поддержка", href: "/support"   },
 ];
 
 export default function BottomNav() {
@@ -32,14 +32,16 @@ export default function BottomNav() {
       animate={{ y: 0, opacity: 1 }}
       transition={{ type: "spring", stiffness: 260, damping: 25, delay: 0.3 }}
       className="fixed bottom-0 left-0 right-0 z-50 px-4 pb-safe"
-      style={{ paddingBottom: "max(1rem, env(safe-area-inset-bottom))" }}
+      style={{ paddingBottom: "max(0.75rem, env(safe-area-inset-bottom))" }}
     >
       <div
-        className="glass rounded-3xl border border-bg-border px-2 py-2 flex items-center justify-around max-w-lg mx-auto"
+        className="rounded-[20px] px-2 py-2 flex items-center justify-around max-w-lg mx-auto"
         style={{
-          background: "rgba(11, 14, 17, 0.92)",
-          backdropFilter: "blur(24px)",
-          boxShadow: "0 -4px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.04)",
+          background: "rgba(12, 15, 20, 0.82)",
+          backdropFilter: "blur(28px) saturate(1.6)",
+          WebkitBackdropFilter: "blur(28px) saturate(1.6)",
+          boxShadow: "0 -4px 32px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.05), inset 0 1px 0 rgba(255,255,255,0.04)",
+          border: "1px solid rgba(255,255,255,0.06)",
         }}
       >
         {NAV_ITEMS.map(({ icon: Icon, label, href }) => {
@@ -59,8 +61,8 @@ export default function BottomNav() {
                   layoutId="nav-pill"
                   className="absolute inset-0 rounded-2xl"
                   style={{
-                    background: "rgba(255,0,122,0.15)",
-                    border: "1px solid rgba(255,0,122,0.3)",
+                    background: "rgba(244, 63, 111, 0.1)",
+                    border: "1px solid rgba(244, 63, 111, 0.2)",
                   }}
                   transition={{ type: "spring", stiffness: 380, damping: 30 }}
                 />
@@ -69,19 +71,19 @@ export default function BottomNav() {
               {/* Icon */}
               <motion.div
                 animate={{
-                  color: active ? "#FF007A" : "#6B7280",
-                  scale: active ? 1.15 : 1,
+                  color: active ? "#F43F6F" : "#475569",
+                  scale: active ? 1.12 : 1,
                 }}
                 transition={{ type: "spring", stiffness: 400, damping: 20 }}
                 className="relative z-10"
               >
-                <Icon size={22} strokeWidth={active ? 2.5 : 1.8} />
+                <Icon size={21} strokeWidth={active ? 2.4 : 1.8} />
               </motion.div>
 
               {/* Label */}
               <motion.span
                 animate={{
-                  color: active ? "#FF007A" : "#6B7280",
+                  color: active ? "#F43F6F" : "#475569",
                   fontWeight: active ? 700 : 500,
                 }}
                 className="relative z-10 text-[10px] font-outfit leading-none"
@@ -89,11 +91,12 @@ export default function BottomNav() {
                 {label}
               </motion.span>
 
-              {/* Active dot */}
+              {/* Active dot indicator */}
               {active && (
                 <motion.div
                   layoutId="nav-dot"
-                  className="absolute -bottom-1 w-1 h-1 rounded-full bg-pink-neon"
+                  className="absolute -bottom-0.5 w-1 h-1 rounded-full"
+                  style={{ background: "#F43F6F" }}
                   transition={{ type: "spring", stiffness: 380, damping: 30 }}
                 />
               )}

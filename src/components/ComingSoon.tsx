@@ -68,7 +68,7 @@ export default function ComingSoon() {
           {" "}
           {/* Золотой/Жёлтый под цвет клюва птицы */}
           <span 
-            className="text-[#FFD700]"
+            className="text-[#FBBF24]"
             style={{ textShadow: "0 0 20px rgba(255,215,0,0.4)" }}
           >
             Deutsch

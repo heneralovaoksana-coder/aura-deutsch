@@ -41,7 +41,7 @@ export default function AboutPage() {
         <div
           className="absolute top-0 left-0 right-0 h-72 opacity-20"
           style={{
-            background: "radial-gradient(ellipse at 50% 0%, #8B5CF6 0%, transparent 70%)",
+            background: "radial-gradient(ellipse at 50% 0%, #6366F1 0%, transparent 70%)",
             filter: "blur(40px)",
           }}
         />
@@ -71,9 +71,9 @@ export default function AboutPage() {
           </p>
 
           {/* Beta badge */}
-          <div className="inline-flex items-center gap-2 glass-pink rounded-2xl px-5 py-2.5 border border-pink-neon/30">
-            <Zap size={14} className="text-pink-neon" />
-            <span className="text-pink-neon font-outfit font-bold text-sm">
+          <div className="inline-flex items-center gap-2 glass-rose rounded-2xl px-5 py-2.5 border border-rose-500/30">
+            <Zap size={14} className="text-rose-500" />
+            <span className="text-rose-500 font-outfit font-bold text-sm">
               Закрытое Бета-тестирование
             </span>
           </div>
@@ -134,12 +134,12 @@ export default function AboutPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
-          className="rounded-3xl border border-purple-neon/30 p-6 text-center"
+          className="rounded-3xl border border-indigo-500/30 p-6 text-center"
           style={{
             background: "linear-gradient(135deg, rgba(139,92,246,0.1), rgba(17,21,25,0.95))",
           }}
         >
-          <p className="text-purple-soft text-xs uppercase tracking-widest mb-2">
+          <p className="text-indigo-400 text-xs uppercase tracking-widest mb-2">
             Наша миссия
           </p>
           <p className="text-white font-outfit font-bold text-lg leading-snug">

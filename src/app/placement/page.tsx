@@ -82,7 +82,7 @@ function ReadTask({ item, onAnswer }: { item: PlacementItem; onAnswer: (correct:
     <div className="flex flex-col gap-6 font-outfit">
       <div className="bg-bg-card border border-bg-border rounded-3xl p-6">
         <p className="text-white text-lg leading-relaxed mb-4">{item.content}</p>
-        <h3 className="text-pink-neon font-semibold">{item.question}</h3>
+        <h3 className="text-rose-500 font-semibold">{item.question}</h3>
       </div>
       
       <div className="grid gap-3">
@@ -92,7 +92,7 @@ function ReadTask({ item, onAnswer }: { item: PlacementItem; onAnswer: (correct:
             onClick={() => setSelected(opt)}
             className={`p-4 rounded-2xl border text-left transition-all ${
               selected === opt 
-                ? "border-pink-neon bg-pink-neon/10 text-white" 
+                ? "border-rose-500 bg-rose-500/10 text-white" 
                 : "border-bg-border bg-transparent text-text-muted hover:border-text-secondary"
             }`}
           >
@@ -141,7 +141,7 @@ function WriteTask({ item, onAnswer }: { item: PlacementItem; onAnswer: (correct
           value={text}
           onChange={(e) => setText(e.target.value)}
           placeholder="Schreiben Sie hier..."
-          className="w-full h-40 bg-bg-deep border border-bg-border rounded-2xl p-4 text-white placeholder-text-muted focus:outline-none focus:border-purple-neon resize-none transition-colors"
+          className="w-full h-40 bg-bg-deep border border-bg-border rounded-2xl p-4 text-white placeholder-text-muted focus:outline-none focus:border-indigo-500 resize-none transition-colors"
         />
         <div className="absolute bottom-4 right-4 text-xs font-mono text-text-muted">
           {text.length} chars
@@ -359,7 +359,7 @@ export default function PlacementPage() {
 
           <div className="p-6 border border-bg-border rounded-3xl mb-8 bg-black/50">
             <p className="text-text-secondary text-sm mb-1">Полученный уровень:</p>
-            <p className="text-4xl font-black text-pink-neon">{assignedLevel}</p>
+            <p className="text-4xl font-black text-rose-500">{assignedLevel}</p>
           </div>
 
           <NeonButton variant="pink" size="lg" fullWidth onClick={finishTest}>

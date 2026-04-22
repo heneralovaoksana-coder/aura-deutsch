@@ -29,7 +29,7 @@ export default function LessonPage() {
           className="absolute top-0 left-0 right-0 h-64 opacity-20"
           style={{
             background:
-              "radial-gradient(ellipse at 50% 0%, #FF007A 0%, transparent 70%)",
+              "radial-gradient(ellipse at 50% 0%, #F43F6F 0%, transparent 70%)",
             filter: "blur(40px)",
           }}
         />
@@ -43,8 +43,8 @@ export default function LessonPage() {
           className="mb-6"
         >
           <div className="flex items-center gap-3 mb-1">
-            <div className="w-10 h-10 rounded-2xl bg-pink-neon/20 border border-pink-neon/30 flex items-center justify-center">
-              <BookOpen size={20} className="text-pink-neon" />
+            <div className="w-10 h-10 rounded-2xl bg-rose-500/20 border border-rose-500/30 flex items-center justify-center">
+              <BookOpen size={20} className="text-rose-500" />
             </div>
             <div>
               <h1 className="text-2xl font-outfit font-black text-white">
@@ -55,9 +55,9 @@ export default function LessonPage() {
           </div>
 
           {/* ZBT chip */}
-          <div className="glass-pink rounded-xl px-4 py-2 inline-flex items-center gap-2 mt-2">
-            <Zap size={12} className="text-pink-neon" />
-            <span className="text-pink-neon text-xs font-outfit font-semibold">
+          <div className="glass-rose rounded-xl px-4 py-2 inline-flex items-center gap-2 mt-2">
+            <Zap size={12} className="text-rose-500" />
+            <span className="text-rose-500 text-xs font-outfit font-semibold">
               +15 баллов за урок · 1 балл = $0.08
             </span>
           </div>
@@ -88,13 +88,13 @@ export default function LessonPage() {
                     isLocked 
                       ? "bg-white/5 border-white/5 opacity-50 cursor-not-allowed" 
                       : isExam
-                        ? "bg-gradient-to-r from-purple-neon/20 to-pink-neon/20 border-pink-neon/50 shadow-neon-pink-sm"
-                        : "glass border-bg-border hover:border-pink-neon/30 hover:shadow-neon-pink-sm"
+                        ? "bg-gradient-to-r from-indigo-500/20 to-rose-500/20 border-rose-500/50 shadow-rose-soft"
+                        : "glass border-bg-border hover:border-rose-500/30 hover:shadow-rose-soft"
                   }`}
                 >
                   {/* Lesson number or Icon */}
                   <div className={`w-14 h-14 rounded-2xl flex items-center justify-center text-2xl font-outfit font-black text-white flex-shrink-0 ${
-                    isLocked ? "bg-white/10" : isExam ? "bg-gradient-to-br from-red-500 to-pink-neon shadow-lg" : "bg-gradient-to-br from-pink-neon to-purple-neon shadow-neon-pink-sm"
+                    isLocked ? "bg-white/10" : isExam ? "bg-gradient-to-br from-red-500 to-rose-500 shadow-lg" : "bg-gradient-to-br from-rose-500 to-indigo-500 shadow-rose-soft"
                   }`}>
                     {isLocked ? <Lock size={20} /> : isExam ? "!" : i + 1}
                   </div>
@@ -117,8 +117,8 @@ export default function LessonPage() {
                           </span>
                         </div>
                         <div className="flex items-center gap-1">
-                          <Star size={11} className="text-gold-bright" />
-                          <span className="text-gold-bright text-xs font-semibold">
+                          <Star size={11} className="text-amber-400" />
+                          <span className="text-amber-400 text-xs font-semibold">
                             +{lesson.pointsReward} pts
                           </span>
                         </div>
@@ -127,7 +127,7 @@ export default function LessonPage() {
                   </div>
 
                   {/* Arrow */}
-                  {!isLocked && <ChevronRight size={20} className={isExam ? "text-pink-neon" : "text-text-muted flex-shrink-0"} />}
+                  {!isLocked && <ChevronRight size={20} className={isExam ? "text-rose-500" : "text-text-muted flex-shrink-0"} />}
                 </motion.button>
               </motion.div>
             );

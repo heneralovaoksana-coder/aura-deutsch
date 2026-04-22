@@ -77,7 +77,7 @@ export default function ExamScreen({ questions, onComplete }: ExamScreenProps) {
                    onClick={() => handleSelect(idx)}
                    className={`w-full p-4 text-sm rounded-xl text-left font-medium transition-all ${
                      selectedOpt === idx
-                       ? "bg-pink-neon/20 border-pink-neon text-white shadow-[0_0_15px_rgba(255,0,122,0.2)]"
+                       ? "bg-rose-500/20 border-rose-500 text-white shadow-[0_0_15px_rgba(255,0,122,0.2)]"
                        : "bg-white/5 border-white/5 text-text-primary hover:bg-white/10 hover:border-white/10"
                    } border`}
                 >

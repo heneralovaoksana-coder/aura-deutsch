@@ -38,8 +38,8 @@ export default function LessonProgressBar({
         <motion.div
           className="h-full rounded-full relative overflow-hidden"
           style={{
-            background: "linear-gradient(90deg, #FF007A, #FF4DA6, #8B5CF6)",
-            boxShadow: "0 0 12px #FF007A66",
+            background: "linear-gradient(90deg, #F43F6F, #FF4DA6, #6366F1)",
+            boxShadow: "0 0 12px #F43F6F66",
           }}
           initial={{ width: `${((current - 1) / total) * 100}%` }}
           animate={{ width: `${progress}%` }}

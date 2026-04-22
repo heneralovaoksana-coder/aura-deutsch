@@ -103,7 +103,7 @@ export default function WordJumble({ exercise, onComplete }: WordJumbleProps) {
           status === "wrong"
             ? "border-red-500/60 bg-red-500/5"
             : status === "correct"
-            ? "border-green-money/60 bg-green-money/5"
+            ? "border-emerald-400/60 bg-emerald-400/5"
             : "border-white/10 bg-white/[0.02]"
         }`}
       >
@@ -131,8 +131,8 @@ export default function WordJumble({ exercise, onComplete }: WordJumbleProps) {
               onClick={() => removeWord(i)}
               className={`px-4 py-2 rounded-2xl font-outfit font-bold text-sm border transition-all ${
                 status === "correct"
-                  ? "bg-green-money/20 border-green-money/50 text-green-money"
-                  : "bg-pink-neon/20 border-pink-neon/40 text-white hover:bg-pink-neon/30"
+                  ? "bg-emerald-400/20 border-emerald-400/50 text-emerald-400"
+                  : "bg-rose-500/20 border-rose-500/40 text-white hover:bg-rose-500/30"
               }`}
             >
               {word}
@@ -154,7 +154,7 @@ export default function WordJumble({ exercise, onComplete }: WordJumbleProps) {
           <motion.p
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="w-full text-center text-green-money text-sm font-outfit font-bold mt-1"
+            className="w-full text-center text-emerald-400 text-sm font-outfit font-bold mt-1"
           >
             ✓ Правильно!
           </motion.p>
@@ -184,7 +184,7 @@ export default function WordJumble({ exercise, onComplete }: WordJumbleProps) {
                 whileHover={{ scale: 1.06, y: -2 }}
                 whileTap={{ scale: 0.92 }}
                 onClick={() => addWord(word, i)}
-                className="px-5 py-3 rounded-2xl font-outfit font-bold text-sm text-white border border-bg-border bg-bg-elevated hover:border-pink-neon/40 hover:bg-pink-neon/10 hover:shadow-neon-pink-sm transition-all duration-200"
+                className="px-5 py-3 rounded-2xl font-outfit font-bold text-sm text-white border border-bg-border bg-bg-elevated hover:border-rose-500/40 hover:bg-rose-500/10 hover:shadow-rose-soft transition-all duration-200"
                 style={{
                   boxShadow: "0 4px 0 rgba(0,0,0,0.4)",
                 }}
@@ -207,7 +207,7 @@ export default function WordJumble({ exercise, onComplete }: WordJumbleProps) {
           onClick={isAnswerReady ? checkAnswer : undefined}
           className={`w-full py-4 rounded-2xl font-outfit font-bold text-lg transition-all duration-300 ${
             isAnswerReady
-              ? "btn-neon-pink cursor-pointer"
+              ? "btn-rose cursor-pointer"
               : "bg-white/5 border border-white/10 text-text-muted cursor-not-allowed"
           }`}
         >

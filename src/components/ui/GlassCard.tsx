@@ -7,7 +7,7 @@ import { haptic } from "@/lib/telegram";
 interface GlassCardProps {
   children: ReactNode;
   className?: string;
-  glowColor?: "pink" | "green" | "purple" | "none";
+  glowColor?: "rose" | "emerald" | "amber" | "indigo" | "none";
   onClick?: () => void;
   animate?: boolean;
   delay?: number;
@@ -22,10 +22,11 @@ export default function GlassCard({
   delay = 0,
 }: GlassCardProps) {
   const glowStyles = {
-    pink: "border-pink-neon/20 shadow-neon-pink-sm hover:shadow-neon-pink hover:border-pink-neon/40",
-    green: "border-green-money/20 shadow-neon-green-sm hover:shadow-neon-green hover:border-green-money/40",
-    purple: "border-purple-neon/20 shadow-neon-purple hover:border-purple-neon/40",
-    none: "border-bg-border hover:border-white/10",
+    rose:    "border-rose-500/15 hover:border-rose-500/25 hover:shadow-rose-soft",
+    emerald: "border-emerald-500/15 hover:border-emerald-500/25 hover:shadow-emerald-soft",
+    amber:   "border-amber-500/15 hover:border-amber-500/25 hover:shadow-amber-soft",
+    indigo:  "border-indigo-500/15 hover:border-indigo-500/25 hover:shadow-indigo-soft",
+    none:    "border-bg-border hover:border-bg-hover",
   };
 
   const handleClick = () => {

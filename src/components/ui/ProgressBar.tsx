@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 interface ProgressBarProps {
   value: number; // 0–100
-  color?: "pink" | "green" | "purple";
+  color?: "rose" | "emerald" | "indigo";
   height?: "sm" | "md" | "lg";
   showLabel?: boolean;
   animated?: boolean;
@@ -13,7 +13,7 @@ interface ProgressBarProps {
 
 export default function ProgressBar({
   value,
-  color = "pink",
+  color = "rose",
   height = "md",
   showLabel = false,
   animated = true,
@@ -24,9 +24,9 @@ export default function ProgressBar({
   const heights = { sm: "h-1", md: "h-2", lg: "h-3" };
 
   const fillClass = {
-    pink: "progress-fill-pink",
-    green: "progress-fill-green",
-    purple: "bg-gradient-to-r from-purple-neon to-purple-soft shadow-neon-purple",
+    rose:    "progress-fill-rose",
+    emerald: "progress-fill-emerald",
+    indigo:  "bg-gradient-to-r from-indigo-500 to-indigo-400 shadow-indigo-soft",
   }[color];
 
   return (

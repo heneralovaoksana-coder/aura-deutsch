@@ -21,7 +21,7 @@ export default function GrammarCard({ card, onComplete }: GrammarCardProps) {
         }}
       >
         <div className="flex items-center gap-3 mb-6">
-          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-purple-neon to-pink-neon flex items-center justify-center shadow-lg text-white font-bold text-2xl font-outfit">
+          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-500 to-rose-500 flex items-center justify-center shadow-lg text-white font-bold text-2xl font-outfit">
             i
           </div>
           <h2 className="text-2xl font-outfit font-black text-white">
@@ -35,7 +35,7 @@ export default function GrammarCard({ card, onComplete }: GrammarCardProps) {
 
         {card.tips.length > 0 && (
           <div className="space-y-3">
-            <h3 className="text-pink-neon font-semibold text-sm uppercase tracking-wider mb-2">Примеры</h3>
+            <h3 className="text-rose-500 font-semibold text-sm uppercase tracking-wider mb-2">Примеры</h3>
             {card.tips.map((tip, idx) => (
               <motion.div
                 key={idx}
@@ -44,7 +44,7 @@ export default function GrammarCard({ card, onComplete }: GrammarCardProps) {
                 transition={{ delay: 0.2 + idx * 0.1 }}
                 className="bg-white/5 px-4 py-3 rounded-xl border border-white/5 flex gap-3 text-sm text-white/90"
               >
-                <div className="text-pink-neon shrink-0">•</div>
+                <div className="text-rose-500 shrink-0">•</div>
                 {tip}
               </motion.div>
             ))}

@@ -1,14 +1,27 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { DICTIONARY } from "@/data/dictionary";
 import { haptic } from "@/lib/telegram";
-import { Play } from "lucide-react";
+import { Play, Search, X, Volume2 } from "lucide-react";
 
 export default function DictionaryPage() {
   const [activeTab, setActiveTab] = useState(DICTIONARY[0].id);
+  const [search, setSearch] = useState("");
   const activeCategory = DICTIONARY.find(c => c.id === activeTab)!;
+
+  // Filter words by search query
+  const filteredWords = useMemo(() => {
+    if (!search.trim()) return activeCategory.words;
+    const q = search.toLowerCase();
+    return activeCategory.words.filter(
+      w => w.word.toLowerCase().includes(q) || w.translation.toLowerCase().includes(q)
+    );
+  }, [activeCategory, search]);
+
+  // Count total words across all categories
+  const totalWords = DICTIONARY.reduce((sum, cat) => sum + cat.words.length, 0);
 
   const playAudio = (text: string) => {
     haptic.tick();
@@ -19,74 +32,132 @@ export default function DictionaryPage() {
     }
   };
 
+  const difficultyLabels = ["", "Лёгкий", "Средний", "Сложный"];
+  const difficultyColors = [
+    "",
+    "text-emerald-400 bg-emerald-500/10 border-emerald-500/20",
+    "text-amber-400 bg-amber-500/10 border-amber-500/20",
+    "text-rose-400 bg-rose-500/10 border-rose-500/20",
+  ];
+
   return (
-    <div className="min-h-screen bg-bg-deep text-text-primary pb-24 font-inter px-4 pt-6">
-      <div className="fixed top-0 right-0 w-64 h-64 bg-pink-neon/10 rounded-full blur-[80px] pointer-events-none" />
-      <div className="fixed bottom-0 left-0 w-64 h-64 bg-purple-neon/10 rounded-full blur-[80px] pointer-events-none" />
-      
+    <div className="min-h-screen bg-bg-deep text-text-primary pb-28 font-inter px-4 pt-6">
+      {/* Ambient background */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden">
+        <div className="float-orb w-64 h-64 top-0 right-0 opacity-40" style={{ background: "rgba(244,63,111,0.06)" }} />
+        <div className="float-orb w-48 h-48 bottom-40 left-0 opacity-30" style={{ background: "rgba(99,102,241,0.06)", animationDelay: "3s" }} />
+      </div>
+
       <div className="relative z-10 max-w-lg mx-auto">
-        <h1 className="text-4xl font-outfit font-black text-white mb-6 tracking-tight drop-shadow-md">
-          Smart <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-neon to-pink-neon">Словарь</span>
-        </h1>
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: -12 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-5"
+        >
+          <h1 className="text-3xl font-outfit font-black text-text-primary mb-1 tracking-tight">
+            Словарь
+          </h1>
+          <p className="text-text-secondary text-sm">
+            {totalWords} слов · {DICTIONARY.length} категорий
+          </p>
+        </motion.div>
+
+        {/* Search Bar */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.05 }}
+          className="glass rounded-2xl border border-bg-border mb-4 flex items-center gap-3 px-4 py-3 focus-within:border-rose-500/30 transition-colors"
+        >
+          <Search size={18} className="text-text-muted flex-shrink-0" />
+          <input
+            type="text"
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            placeholder="Поиск слов..."
+            className="flex-1 bg-transparent text-text-primary text-sm font-inter placeholder:text-text-muted outline-none"
+          />
+          {search && (
+            <button onClick={() => setSearch("")} className="text-text-muted hover:text-text-primary transition-colors">
+              <X size={16} />
+            </button>
+          )}
+        </motion.div>
 
         {/* Categories Tabs */}
-        <div className="flex gap-3 overflow-x-auto pb-4 no-scrollbar">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.1 }}
+          className="flex gap-2 overflow-x-auto pb-4 no-scrollbar"
+        >
           {DICTIONARY.map((cat) => (
             <button
               key={cat.id}
               onClick={() => {
                 haptic.select();
                 setActiveTab(cat.id);
+                setSearch("");
               }}
-              className={`flex items-center gap-2 px-4 py-3 rounded-2xl whitespace-nowrap transition-all font-outfit text-sm font-semibold border ${
+              className={`flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl whitespace-nowrap transition-all font-outfit text-sm font-semibold border ${
                 activeTab === cat.id
-                  ? "bg-pink-neon/20 border-pink-neon text-white shadow-[0_0_15px_rgba(255,0,122,0.3)]"
-                  : "bg-white/5 border-white/5 text-text-muted hover:bg-white/10 hover:text-white/80"
+                  ? "bg-rose-500/10 border-rose-500/25 text-rose-400 shadow-rose-soft/30"
+                  : "bg-bg-card/50 border-bg-border text-text-muted hover:bg-bg-elevated hover:text-text-secondary"
               }`}
             >
-              <span className="text-lg">{cat.icon}</span>
+              <span className="text-base">{cat.icon}</span>
               {cat.name}
+              <span className={`text-[10px] ml-0.5 ${activeTab === cat.id ? "text-rose-400/60" : "text-text-muted/60"}`}>
+                {cat.words.length}
+              </span>
             </button>
           ))}
-        </div>
+        </motion.div>
 
         {/* Word Cards */}
-        <div className="mt-4">
+        <div className="mt-2">
           <AnimatePresence mode="wait">
             <motion.div
-              key={activeTab}
+              key={activeTab + search}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.2 }}
-              className="space-y-4"
+              className="space-y-3"
             >
-              {activeCategory.words.map((word) => (
-                <div 
-                  key={word.id} 
-                  className="glass-panel p-5 rounded-[24px] border border-white/5 shadow-[0_8px_32px_rgba(0,0,0,0.6)]"
-                  style={{
-                    background: "linear-gradient(135deg, rgba(20,20,25,0.95) 0%, rgba(10,12,15,0.98) 100%)",
-                    boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05)"
-                  }}
+              {filteredWords.length === 0 && (
+                <div className="glass rounded-2xl p-8 text-center">
+                  <p className="text-text-muted text-sm">Ничего не найдено 🔍</p>
+                </div>
+              )}
+
+              {filteredWords.map((word, i) => (
+                <motion.div
+                  key={word.id}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.04 }}
+                  className="glass rounded-2xl border border-bg-border p-4 hover:border-bg-hover transition-all group"
                 >
-                  <div className="flex justify-between items-start mb-3">
-                    <div>
-                      <h3 className="text-2xl font-outfit font-black text-white mb-1">
+                  <div className="flex justify-between items-start mb-2">
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-lg font-outfit font-bold text-text-primary mb-0.5 group-hover:text-rose-400 transition-colors">
                         {word.word}
                       </h3>
-                      <p className="text-text-secondary text-sm font-medium">{word.translation}</p>
+                      <p className="text-text-secondary text-sm">{word.translation}</p>
                     </div>
-                    <button 
+                    <button
                       onClick={() => playAudio(word.word)}
-                      className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-pink-neon hover:bg-pink-neon/20 transition-colors shrink-0 border border-white/5 shadow-md active:scale-95"
+                      className="w-10 h-10 rounded-xl bg-rose-500/8 flex items-center justify-center text-rose-400 hover:bg-rose-500/15 transition-all shrink-0 ml-3 active:scale-90"
                     >
-                      <Play size={20} fill="currentColor" />
+                      <Volume2 size={18} />
                     </button>
                   </div>
 
-                  <div className="mt-4 p-4 bg-black/30 rounded-2xl border border-white/5 shadow-inner">
-                    <p className="text-pink-neon font-medium text-[15px] leading-snug mb-1">
+                  {/* Example */}
+                  <div className="p-3 bg-bg-deep/60 rounded-xl border border-bg-border/50 mt-2">
+                    <p className="text-rose-400/90 font-medium text-[13px] leading-snug mb-0.5">
                       "{word.example_sentence}"
                     </p>
                     <p className="text-text-muted text-xs italic">
@@ -94,18 +165,23 @@ export default function DictionaryPage() {
                     </p>
                   </div>
 
-                  <div className="mt-5 flex items-center justify-between">
-                     <span className="text-[10px] uppercase font-bold tracking-widest text-white/40">Сложность</span>
-                     <div className="flex gap-1.5">
-                       {[1,2,3].map((level) => (
-                         <div 
-                           key={level} 
-                           className={`w-5 h-2 rounded-[2px] shadow-sm ${level <= word.difficulty_level ? "bg-gradient-to-r from-purple-neon to-pink-neon" : "bg-white/10"}`}
-                         />
-                       ))}
-                     </div>
+                  {/* Difficulty badge */}
+                  <div className="mt-3 flex items-center justify-between">
+                    <span className={`text-[10px] uppercase font-bold tracking-widest px-2 py-0.5 rounded-full border ${difficultyColors[word.difficulty_level]}`}>
+                      {difficultyLabels[word.difficulty_level]}
+                    </span>
+                    <div className="flex gap-1">
+                      {[1,2,3].map((level) => (
+                        <div
+                          key={level}
+                          className={`w-4 h-1.5 rounded-full transition-all ${level <= word.difficulty_level
+                            ? "bg-gradient-to-r from-rose-500 to-rose-400"
+                            : "bg-bg-border"}`}
+                        />
+                      ))}
+                    </div>
                   </div>
-                </div>
+                </motion.div>
               ))}
             </motion.div>
           </AnimatePresence>

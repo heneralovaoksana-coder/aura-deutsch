@@ -4,11 +4,18 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ═══════════════════════════════════════════════════════════════════
+   AURA DEUTSCH — Premium Liquid Glass Design System
+   ═══════════════════════════════════════════════════════════════════ */
+
 /* ─── Base ─────────────────────────────────────────────────────── */
 :root {
-  --bg-deep: #0B0E11;
-  --pink-neon: #FF007A;
-  --green-money: #00FF94;
+  --bg-deep: #0C0F14;
+  --rose-500: #F43F6F;
+  --rose-600: #E11D56;
+  --emerald-500: #10B981;
+  --amber-500: #F59E0B;
+  --indigo-500: #6366F1;
 }
 
 * {
@@ -17,114 +24,173 @@
 }
 
 html, body {
-  background-color: #0B0E11;
-  color: #FFFFFF;
+  background-color: var(--bg-deep);
+  color: #F8FAFC;
   font-family: 'Inter', sans-serif;
   min-height: 100vh;
   overflow-x: hidden;
-  /* Telegram: stretch to full viewport */
   height: 100%;
 }
 
-/* ─── Scrollbar ─────────────────────────────────────────────────── */
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: #0B0E11; }
-::-webkit-scrollbar-thumb { background: #FF007A44; border-radius: 4px; }
+/* ─── Scrollbar (Subtle & elegant) ────────────────────────────── */
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(244,63,111,0.2); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(244,63,111,0.4); }
 
-/* ─── Glassmorphism ─────────────────────────────────────────────── */
+/* ═════════════════════════════════════════════════════════════════
+   LIQUID GLASS COMPONENTS
+   ═════════════════════════════════════════════════════════════════ */
 @layer components {
+
+  /* ─── Glass Panels ──────────────────────────────────────────── */
   .glass {
-    background: rgba(17, 21, 25, 0.8);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    background: rgba(20, 24, 32, 0.7);
+    backdrop-filter: blur(24px) saturate(1.5);
+    -webkit-backdrop-filter: blur(24px) saturate(1.5);
     border: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.04);
   }
 
-  .glass-pink {
-    background: rgba(255, 0, 122, 0.08);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 0, 122, 0.2);
+  .glass-rose {
+    background: rgba(244, 63, 111, 0.06);
+    backdrop-filter: blur(20px) saturate(1.4);
+    -webkit-backdrop-filter: blur(20px) saturate(1.4);
+    border: 1px solid rgba(244, 63, 111, 0.15);
   }
 
-  .glass-green {
-    background: rgba(0, 255, 148, 0.08);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(0, 255, 148, 0.2);
+  .glass-emerald {
+    background: rgba(16, 185, 129, 0.06);
+    backdrop-filter: blur(20px) saturate(1.4);
+    -webkit-backdrop-filter: blur(20px) saturate(1.4);
+    border: 1px solid rgba(16, 185, 129, 0.15);
   }
 
-  /* ─── 3D Neon Button ──────────────────────────────────────────── */
-  .btn-neon-pink {
-    @apply relative overflow-hidden rounded-2xl font-outfit font-semibold text-white transition-all duration-150;
-    background: linear-gradient(135deg, #FF007A 0%, #CC0060 100%);
-    box-shadow: 0 6px 0 #880040, 0 0 20px #FF007A55;
-  }
-  .btn-neon-pink:active {
-    transform: translateY(4px);
-    box-shadow: 0 2px 0 #880040, 0 0 10px #FF007A44;
+  .glass-amber {
+    background: rgba(245, 158, 11, 0.06);
+    backdrop-filter: blur(20px) saturate(1.4);
+    -webkit-backdrop-filter: blur(20px) saturate(1.4);
+    border: 1px solid rgba(245, 158, 11, 0.15);
   }
 
-  .btn-neon-green {
-    @apply relative overflow-hidden rounded-2xl font-outfit font-bold text-bg-deep transition-all duration-150;
-    background: linear-gradient(135deg, #00FF94 0%, #00CC75 100%);
-    box-shadow: 0 6px 0 #007A47, 0 0 20px #00FF9455;
+  /* ─── Premium Buttons ───────────────────────────────────────── */
+  .btn-rose {
+    @apply relative overflow-hidden rounded-2xl font-outfit font-semibold text-white transition-all duration-200;
+    background: linear-gradient(135deg, #F43F6F 0%, #E11D56 100%);
+    box-shadow: 0 4px 0 #9F1243, 0 8px 24px rgba(244, 63, 111, 0.25);
   }
-  .btn-neon-green:active {
-    transform: translateY(4px);
-    box-shadow: 0 2px 0 #007A47, 0 0 10px #00FF9444;
+  .btn-rose:hover {
+    box-shadow: 0 4px 0 #9F1243, 0 12px 32px rgba(244, 63, 111, 0.35);
+    transform: translateY(-1px);
+  }
+  .btn-rose:active {
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 #9F1243, 0 4px 12px rgba(244, 63, 111, 0.2);
   }
 
-  /* ─── Shimmer Loading ─────────────────────────────────────────── */
+  .btn-emerald {
+    @apply relative overflow-hidden rounded-2xl font-outfit font-bold transition-all duration-200;
+    color: #0F172A;
+    background: linear-gradient(135deg, #34D399 0%, #10B981 100%);
+    box-shadow: 0 4px 0 #059669, 0 8px 24px rgba(16, 185, 129, 0.25);
+  }
+  .btn-emerald:hover {
+    box-shadow: 0 4px 0 #059669, 0 12px 32px rgba(16, 185, 129, 0.35);
+    transform: translateY(-1px);
+  }
+  .btn-emerald:active {
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 #059669, 0 4px 12px rgba(16, 185, 129, 0.2);
+  }
+
+  /* Ghost button (subtle) */
+  .btn-ghost {
+    @apply rounded-2xl font-outfit font-semibold transition-all duration-200;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: #F8FAFC;
+  }
+  .btn-ghost:hover {
+    background: rgba(255,255,255,0.08);
+    border-color: rgba(255,255,255,0.14);
+  }
+
+  /* Outline rose */
+  .btn-outline-rose {
+    @apply rounded-2xl font-outfit font-semibold transition-all duration-200;
+    background: transparent;
+    border: 1.5px solid rgba(244, 63, 111, 0.4);
+    color: #F43F6F;
+  }
+  .btn-outline-rose:hover {
+    background: rgba(244, 63, 111, 0.08);
+    border-color: rgba(244, 63, 111, 0.6);
+  }
+
+  /* ─── Shimmer Loading ───────────────────────────────────────── */
   .shimmer {
-    background: linear-gradient(90deg, #16191F 25%, #1E2328 50%, #16191F 75%);
+    background: linear-gradient(90deg, #1A1F2B 25%, #242A38 50%, #1A1F2B 75%);
     background-size: 200% 100%;
     animation: shimmer 1.5s linear infinite;
   }
 
-  /* ─── Neon text ───────────────────────────────────────────────── */
-  .text-neon-pink {
-    color: #FF007A;
-    text-shadow: 0 0 20px #FF007A88;
-  }
-
-  .text-neon-green {
-    color: #00FF94;
-    text-shadow: 0 0 20px #00FF9488;
-  }
-
-  /* ─── Progress bar track ──────────────────────────────────────── */
+  /* ─── Progress bar ──────────────────────────────────────────── */
   .progress-track {
-    @apply w-full h-2 rounded-full overflow-hidden;
+    @apply w-full rounded-full overflow-hidden;
     background: rgba(255,255,255,0.06);
   }
 
-  .progress-fill-pink {
+  .progress-fill-rose {
     height: 100%;
     border-radius: 9999px;
-    background: linear-gradient(90deg, #FF007A, #FF4DA6);
-    box-shadow: 0 0 10px #FF007A88;
+    background: linear-gradient(90deg, #F43F6F, #FF7090);
+    box-shadow: 0 0 12px rgba(244, 63, 111, 0.4);
   }
 
-  .progress-fill-green {
+  .progress-fill-emerald {
     height: 100%;
     border-radius: 9999px;
-    background: linear-gradient(90deg, #00FF94, #00FFBC);
-    box-shadow: 0 0 10px #00FF9488;
+    background: linear-gradient(90deg, #10B981, #34D399);
+    box-shadow: 0 0 12px rgba(16, 185, 129, 0.4);
+  }
+
+  /* ─── Category chip ─────────────────────────────────────────── */
+  .chip {
+    @apply inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-outfit font-semibold transition-all duration-200;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+  .chip-active {
+    background: rgba(244, 63, 111, 0.12);
+    border-color: rgba(244, 63, 111, 0.3);
+    color: #F43F6F;
+  }
+
+  /* ─── 3D floating decoration ────────────────────────────────── */
+  .float-orb {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    filter: blur(60px);
+    animation: float 6s ease-in-out infinite;
   }
 }
 
-/* ─── Telegram Web App safe area ───────────────────────────────── */
+/* ─── Telegram Web App safe area ──────────────────────────────── */
 .twa-safe {
   padding-bottom: env(safe-area-inset-bottom, 16px);
 }
 
-/* ─── Number counter animation ──────────────────────────────────── */
+/* ─── Number counter animation ────────────────────────────────── */
 @keyframes numberPop {
   0%   { transform: scale(0.7); opacity: 0; }
-  60%  { transform: scale(1.1); }
+  60%  { transform: scale(1.08); }
   100% { transform: scale(1);   opacity: 1; }
 }
 .number-pop {
   animation: numberPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 }
+
+/* ─── Custom no-scrollbar utility ─────────────────────────────── */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
